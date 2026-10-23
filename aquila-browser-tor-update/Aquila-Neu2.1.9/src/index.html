@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquila Browser</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components/titlebar.css">
+    <link rel="stylesheet" href="styles/components/tabs.css">
+    <link rel="stylesheet" href="styles/components/navigation.css">
+    <link rel="stylesheet" href="styles/components/home.css">
+    <link rel="stylesheet" href="styles/components/settings.css">
+    <link rel="stylesheet" href="styles/components/modals.css">
+    <link rel="stylesheet" href="styles/components/suggestions.css">
+    <link rel="stylesheet" href="styles/components/notification.css">
+    <link rel="stylesheet" href="styles/components/extensions.css">
+    <link rel="stylesheet" href="styles/components/store.css">
+    <link rel="stylesheet" href="styles/components/tor.css">
+    <link id="theme-stylesheet" rel="stylesheet" href="styles/themes/aquila.css">
+</head>
+<body>
+    <script>
+        var aquilaPlatform = (typeof process !== 'undefined' && process.env.AQUILA_PLATFORM) || (typeof process !== 'undefined' && process.platform) || '';
+        if (aquilaPlatform === 'darwin') document.body.classList.add('platform-macos');
+        else if (aquilaPlatform === 'win32') document.body.classList.add('platform-windows');
+        else document.body.classList.add('platform-linux');
+    </script>
+
+    <div class="browser-container">
+        <div class="titlebar">
+            <div class="titlebar-left">
+                <div class="titlebar-logo-container">
+                    <div class="titlebar-crown">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100%" height="100%" fill="white">
+                            <path d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z"/>
+                        </svg>
+                    </div>
+                </div>
+                <span class="titlebar-title">Aquila</span>
+            </div>
+            <div class="titlebar-right">
+                <button class="titlebar-btn minimize-btn" id="minimize-btn">
+                    <svg viewBox="0 0 12 1"><rect width="12" height="1"/></svg>
+                </button>
+                <button class="titlebar-btn maximize-btn" id="maximize-btn">
+                    <svg viewBox="0 0 10 10"><path d="M0,0v10h10V0H0z M9,9H1V1h8V9z"/></svg>
+                </button>
+                <button class="titlebar-btn close-btn" id="close-btn">
+                    <svg viewBox="0 0 10 10"><path d="M0,0L10,10M10,0L0,10"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="tab-bar">
+            <div class="tabs-container" id="tabs-container"></div>
+            <button class="new-tab-btn" id="new-tab-btn">
+                <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            </button>
+        </div>
+
+        <div class="navigation-bar">
+            <div class="nav-controls">
+                <button class="nav-btn back-btn" id="back-btn" disabled>
+                    <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+                </button>
+                <button class="nav-btn forward-btn" id="forward-btn" disabled>
+                    <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                </button>
+                <button class="nav-btn reload-btn" id="reload-btn">
+                    <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                </button>
+            </div>
+
+            <div class="address-bar">
+                <svg class="address-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                <input type="text" id="address-input" data-i18n-placeholder="nav.search_placeholder" placeholder="Search or enter web address">
+                <button class="bookmark-star-btn" id="bookmark-star-btn" data-i18n-title="nav.bookmark_add" title="Lesezeichen hinzufügen" style="display: none;">
+                    <svg viewBox="0 0 24 24" class="star-outline">
+                        <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+                    </svg>
+                    <svg viewBox="0 0 24 24" class="star-filled" style="display: none;">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="nav-actions">
+                <button class="action-btn tor-btn" id="tor-btn" data-status="off" title="Tor">
+                    <svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="13" r="8.5"/><circle cx="12" cy="13" r="5"/><circle cx="12" cy="13" r="1.8"/><path d="M12 2.5c1.4 1.8 1.4 3.2 0 4.5"/></svg>
+                </button>
+                <button class="action-btn extensions-btn" id="extensions-btn" data-i18n-title="btn.extensions" title="Extensions">
+                    <svg viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
+                </button>
+                <button class="action-btn bookmarks-btn" id="bookmarks-btn" data-i18n-title="btn.bookmarks" title="Lesezeichen">
+                    <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                </button>
+                <button class="action-btn history-btn" id="history-btn" data-i18n-title="btn.history" title="Verlauf">
+                    <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                </button>
+                <button class="action-btn downloads-btn" id="downloads-btn" data-i18n-title="btn.downloads" title="Downloads">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                </button>
+                <button class="action-btn partners-btn" id="partners-btn" data-i18n-title="btn.partners" title="Partner" style="position: relative;">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    <!-- <span class="partners-badge" id="partners-count-badge" style="display:none;"></span> -->
+                </button>
+                <button class="action-btn settings-btn" id="settings-btn" data-i18n-title="btn.settings" title="Einstellungen">
+                    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="tab-contents" id="tab-contents"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="partners-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content partner-modal-content">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: var(--primary-color, #1e90ff);">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg>
+                    <h2 style="margin: 0;" data-i18n="modal.partners.title">Partner</h2>
+                </div>
+                <button class="modal-close" id="close-partners">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+            </div>
+            <div id="partners-grid-container">
+                <div class="partners-loading">
+                    <div class="partners-loading-spinner"></div>
+                    <span data-i18n="modal.partners.loading">Partner werden geladen...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="extensions-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="max-width: 920px; width: 92vw; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+            <div class="modal-header" style="flex-shrink: 0;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: var(--primary-color, #1e90ff);">
+                        <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>
+                    </svg>
+                    <h2 style="margin: 0;">Aquila Store</h2>
+                </div>
+                <button class="modal-close" id="close-extensions">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+            </div>
+
+            <div class="store-tabs" id="store-tabs">
+                <button class="store-tab active" data-store-tab="store">
+                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z"/></svg>
+                    <span data-i18n="store.tab.addons">Aquila Addons</span>
+                </button>
+                <button class="store-tab" data-store-tab="chrome-extensions">
+                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    <span data-i18n="store.tab.chrome">Chrome Extensions</span>
+                </button>
+                <button class="store-tab" data-store-tab="installed">
+                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                    <span data-i18n="store.tab.installed">Installiert</span>
+                    <span class="store-tab-badge" id="installed-count-badge" style="display:none;">0</span>
+                </button>
+            </div>
+
+            <div style="flex:1;overflow:hidden;position:relative;">
+                <div class="store-panel active" id="store-panel-store"></div>
+                <div class="store-panel" id="store-panel-chrome-extensions"></div>
+                <div class="store-panel" id="store-panel-installed"></div>
+                <div class="addon-detail-overlay" id="addon-detail-overlay"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal settings-modal" id="settings-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="modal.settings.title">Einstellungen</h2>
+                <button class="modal-close" id="close-settings">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+            </div>
+            <div class="settings-content">
+                <div class="settings-sidebar">
+                    <button class="settings-nav-btn active" data-section="security" data-i18n="settings.security">Sicherheit</button>
+                    <button class="settings-nav-btn" data-section="browser" data-i18n="settings.browser">Browser</button>
+                    <button class="settings-nav-btn" data-section="discord">Discord</button>
+                    <button class="settings-nav-btn" data-section="performance" data-i18n="settings.performance">Performance</button>
+                    <button class="settings-nav-btn" data-section="privacy" data-i18n="settings.privacy">Datenschutz</button>
+                    <button class="settings-nav-btn" data-section="permissions" data-i18n="settings.permissions">Berechtigungen</button>
+                </div>
+                <div class="settings-panels">
+                    <div class="settings-panel active" id="security-panel"></div>
+                    <div class="settings-panel" id="browser-panel"></div>
+                    <div class="settings-panel" id="discord-panel"></div>
+                    <div class="settings-panel" id="performance-panel"></div>
+                    <div class="settings-panel" id="privacy-panel"></div>
+                    <div class="settings-panel" id="permissions-panel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="bookmarks-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="modal.bookmarks.title">Lesezeichen</h2>
+                <button class="modal-close" id="close-bookmarks">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="bookmarks-list"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="history-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="modal.history.title">Verlauf</h2>
+                <button class="modal-close" id="close-history">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="history-list"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="downloads-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="modal.downloads.title">Downloads</h2>
+                <button class="modal-close" id="close-downloads">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="downloads-list"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="add-quick-access-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 data-i18n="modal.quickaccess.title">Quick Access hinzufügen</h2>
+                <button class="modal-close" onclick="hideAddQuickAccessDialog()">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-primary); font-weight: 500;" data-i18n="modal.quickaccess.name">Name</label>
+                    <input type="text" id="quick-access-name-input" data-i18n-placeholder="modal.quickaccess.name_placeholder" placeholder="z.B. Google" style="width: 100%; padding: 12px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 14px; outline: none;">
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-primary); font-weight: 500;" data-i18n="modal.quickaccess.url">URL</label>
+                    <input type="text" id="quick-access-url-input" data-i18n-placeholder="modal.quickaccess.url_placeholder" placeholder="z.B. https://google.com" style="width: 100%; padding: 12px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 14px; outline: none;">
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button onclick="hideAddQuickAccessDialog()" data-i18n="btn.cancel" style="padding: 10px 20px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); cursor: pointer; font-size: 14px;">Abbrechen</button>
+                    <button onclick="submitQuickAccessForm()" data-i18n="btn.add" style="padding: 10px 20px; background: var(--primary-color); border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; font-size: 14px;">Hinzufügen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="https-warning-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="max-width: 550px;">
+            <div class="modal-header" style="display: flex; align-items: center; gap: 12px; padding: 20px 24px;">
+                <svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: #eab308; flex-shrink: 0;">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                </svg>
+                <h2 style="margin: 0; flex: 1;" data-i18n="modal.https.title">HTTPS-Verbindung fehlgeschlagen</h2>
+                <button class="modal-close" onclick="hideHttpsWarning()" style="margin: 0;">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <p style="color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6;">
+                    <span data-i18n="modal.https.desc1">Die Website</span> <strong id="https-warning-url" style="color: var(--text-primary);"></strong> <span data-i18n="modal.https.desc2">unterstützt kein sicheres HTTPS.</span>
+                </p>
+                <p style="color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6;" data-i18n="modal.https.desc3">
+                    Du hast "HTTPS bevorzugen" aktiviert. Um diese Seite zu besuchen, musst du die Einstellung deaktivieren.
+                </p>
+                <div style="background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 24px;">
+                    <p style="color: rgba(220, 38, 38, 1); font-size: 13px; margin: 0; line-height: 1.5;">
+                        <strong data-i18n="modal.https.warning_label">Warnung:</strong> <span data-i18n="modal.https.warning_text">HTTP-Verbindungen sind unverschlüsselt und können unsicher sein.</span>
+                    </p>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button onclick="hideHttpsWarning()" data-i18n="btn.cancel" style="padding: 10px 20px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); cursor: pointer; font-size: 14px;">Abbrechen</button>
+                    <button onclick="disableHttpsAndRetry()" data-i18n="btn.https_disable" style="padding: 10px 20px; background: rgba(220, 38, 38, 0.9); border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; font-size: 14px;">HTTPS deaktivieren</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="new-window-notification" style="display: none;">
+        <div class="notification-content">
+            <p class="notification-text" data-i18n="notification.new_tab">Möchtest du einen neuen Tab öffnen?</p>
+            <p class="notification-url" id="new-window-url"></p>
+            <div class="notification-actions">
+                <button class="notification-btn notification-btn-secondary" data-i18n="btn.deny" onclick="denyNewWindow()">Ablehnen</button>
+                <button class="notification-btn notification-btn-primary" data-i18n="btn.open" onclick="allowNewWindow()">Öffnen</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="permission-notification" id="permission-notification" style="display: none;">
+        <div class="permission-content">
+            <div class="permission-header">
+                <div class="permission-icon">
+                    <svg class="permission-icon-svg" viewBox="0 0 24 24">
+                        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                    </svg>
+                </div>
+                <div class="permission-info">
+                    <p class="permission-domain" id="permission-domain">example.com</p>
+                    <p class="permission-text" data-i18n="permission.notifications">Möchte Benachrichtigungen verwenden</p>
+                </div>
+            </div>
+            <div class="permission-remember">
+                <label class="permission-checkbox-label">
+                    <input type="checkbox" id="permission-remember" class="permission-checkbox">
+                    <span data-i18n="permission.remember">Entscheidung merken</span>
+                </label>
+            </div>
+            <div class="permission-actions">
+                <button class="permission-btn permission-btn-secondary" data-i18n="btn.block" onclick="denyPermission()">Blockieren</button>
+                <button class="permission-btn permission-btn-primary" data-i18n="btn.allow" onclick="allowPermission(document.getElementById('permission-remember').checked)">Erlauben</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="renderer/renderer.js"></script>
+    <script src="renderer/tabs.js"></script>
+    <script src="renderer/tor.js"></script>
+    <script src="utils/drag-drop.js"></script>
+    <script src="renderer/settings.js"></script>
+    <script src="renderer/suggestions.js"></script>
+    <script src="utils/downloads-handler.js"></script>
+    <script src="utils/extensions-handler.js"></script>
+    <script src="utils/webstore-detect.js"></script>
+    <script>
+    setTimeout(function() {
+        var s1 = document.createElement('script');
+        s1.src = 'utils/discord-rpc.js';
+        document.body.appendChild(s1);
+        var s2 = document.createElement('script');
+        s2.src = 'utils/addon-store.js';
+        document.body.appendChild(s2);
+        var s3 = document.createElement('script');
+        s3.src = 'utils/addon-loader.js';
+        document.body.appendChild(s3);
+    }, 2000);
+    </script>
+</body>
+</html>

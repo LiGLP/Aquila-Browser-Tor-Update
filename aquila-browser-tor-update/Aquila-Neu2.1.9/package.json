@@ -1,0 +1,136 @@
+{
+  "name": "aquila-browser",
+  "version": "2.2.0",
+  "description": "Aquila - Fast, Modern, Powerful Browser with Chrome Extensions",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "start:win": "cross-env AQUILA_PLATFORM=win32 electron .",
+    "start:mac": "cross-env AQUILA_PLATFORM=darwin electron .",
+    "start:linux": "cross-env AQUILA_PLATFORM=linux electron .",
+    "build": "electron-builder",
+    "build:linux": "electron-builder --linux",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac"
+  },
+  "keywords": [
+    "browser",
+    "electron",
+    "aquila",
+    "extensions"
+  ],
+  "author": "Aquila Team",
+  "license": "MIT",
+  "dependencies": {
+    "@iamevan/electron-chrome-web-store": "^0.11.2",
+    "discord-rpc": "^4.0.1",
+    "electron-chrome-extensions": "^4.9.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "https://github.com/castlabs/electron-releases#v35.0.0-beta.5+wvcus",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "electronDist": "node_modules/electron/dist",
+    "appId": "com.aquila.browser",
+    "productName": "Aquila Browser",
+    "files": [
+      "main.js",
+      "addon-manager.js",
+      "src/**/*",
+      "loadingscreen/**/*",
+      "node_modules/**/*"
+    ],
+    "asarUnpack": [
+      "src/addons/**/*"
+    ],
+    "protocols": [
+      {
+        "name": "HTTP Protocol",
+        "schemes": [
+          "http",
+          "https"
+        ]
+      }
+    ],
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "src/assets/icon.icns",
+      "category": "public.app-category.productivity",
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "NSCameraUsageDescription": "Aquila Browser benötigt Zugriff auf die Kamera für Webseiten die Kamerazugriff anfordern.",
+        "NSMicrophoneUsageDescription": "Aquila Browser benötigt Zugriff auf das Mikrofon für Webseiten die Mikrofonzugriff anfordern.",
+        "NSLocationWhenInUseUsageDescription": "Aquila Browser benötigt Standortzugriff für Webseiten die Standortdaten anfordern.",
+        "NSDesktopFolderUsageDescription": "Aquila Browser benötigt Zugriff auf den Desktop für Downloads.",
+        "NSDownloadsFolderUsageDescription": "Aquila Browser benötigt Zugriff auf den Downloads-Ordner.",
+        "NSDocumentsFolderUsageDescription": "Aquila Browser benötigt Zugriff auf Dokumente für Datei-Uploads.",
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLName": "HTTP Protocol",
+            "CFBundleURLSchemes": ["http"]
+          },
+          {
+            "CFBundleURLName": "HTTPS Protocol",
+            "CFBundleURLSchemes": ["https"]
+          }
+        ]
+      }
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icon.ico"
+    },
+    "nsis": {
+      "perMachine": false,
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "src/assets/icon.png",
+      "category": "Network"
+    }
+  }
+}

@@ -1,0 +1,539 @@
+:root {
+    --primary-color: #0054E3;
+    --primary-hover: #003CBB;
+    --bg-primary: #ECE9D8;
+    --bg-secondary: #D6D2C2;
+    --bg-tertiary: #F1EFE2;
+    --text-primary: #000000;
+    --text-secondary: #4A4A4A;
+    --border-color: #ACA899;
+    --accent-color: #316AC5;
+    --error-color: #CC0000;
+    --success-color: #008000;
+}
+
+body {
+    background: var(--bg-primary);
+    font-family: 'Tahoma', 'Segoe UI', sans-serif;
+}
+
+.titlebar {
+    background: linear-gradient(180deg, #0A246A 0%, #3A6EA5 3%, #6C9BD2 5%, #3A6EA5 50%, #0A246A 97%, #08204E 100%) !important;
+    border-bottom: 1px solid #08204E;
+    height: 30px !important;
+}
+
+.titlebar-title {
+    color: #FFFFFF !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    font-size: 12px !important;
+}
+
+.titlebar-crown svg {
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.4));
+}
+
+.titlebar-btn {
+    border-radius: 3px !important;
+    width: 21px !important;
+    height: 21px !important;
+    margin: 2px 1px !important;
+}
+
+.titlebar-btn svg {
+    fill: white !important;
+}
+
+.titlebar-btn:hover {
+    background: rgba(255,255,255,0.25) !important;
+}
+
+.minimize-btn, .maximize-btn {
+    background: linear-gradient(180deg, #3C8EEF 0%, #2B72C8 45%, #1D5BAA 55%, #1951A0 100%) !important;
+    border: 1px solid #1941A3 !important;
+}
+
+.minimize-btn:hover, .maximize-btn:hover {
+    background: linear-gradient(180deg, #5DA5F5 0%, #4A8DE0 45%, #3677C0 55%, #2D6AB5 100%) !important;
+}
+
+.close-btn {
+    background: linear-gradient(180deg, #E47B6F 0%, #C9584A 45%, #B33526 55%, #A42A1C 100%) !important;
+    border: 1px solid #7A2413 !important;
+}
+
+.close-btn:hover {
+    background: linear-gradient(180deg, #F09E94 0%, #E07A6C 45%, #D45A4A 55%, #C94A3A 100%) !important;
+}
+
+.tab-bar {
+    background: var(--bg-secondary) !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 4px 4px 0 4px !important;
+}
+
+.tab {
+    background: linear-gradient(180deg, #F5F3E8 0%, #E2DFD0 100%) !important;
+    border: 1px solid var(--border-color) !important;
+    border-bottom: none !important;
+    border-radius: 4px 4px 0 0 !important;
+    color: var(--text-primary) !important;
+    padding: 4px 12px !important;
+    font-size: 11px !important;
+    margin-right: 2px !important;
+}
+
+.tab.active {
+    background: var(--bg-primary) !important;
+    border-bottom: 1px solid var(--bg-primary) !important;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 1;
+}
+
+.tab:hover:not(.active) {
+    background: linear-gradient(180deg, #FDFCF7 0%, #EBE8DA 100%) !important;
+}
+
+.tab-close svg {
+    fill: var(--text-secondary) !important;
+}
+
+.tab-close:hover svg {
+    fill: var(--error-color) !important;
+}
+
+.new-tab-btn {
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 3px !important;
+}
+
+.new-tab-btn:hover {
+    background: rgba(0,0,0,0.06) !important;
+    border-color: var(--border-color) !important;
+}
+
+.new-tab-btn svg {
+    fill: var(--text-secondary) !important;
+}
+
+.navigation-bar {
+    background: var(--bg-tertiary) !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 4px 8px !important;
+}
+
+.nav-btn {
+    background: linear-gradient(180deg, #FFFFFF 0%, #ECE9D8 100%) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 3px !important;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: linear-gradient(180deg, #FFFFFF 0%, #D6E8FF 100%) !important;
+    border-color: var(--accent-color) !important;
+}
+
+.nav-btn:disabled {
+    opacity: 0.45 !important;
+}
+
+.nav-btn svg {
+    fill: var(--text-primary) !important;
+}
+
+.address-bar {
+    background: #FFFFFF !important;
+    border: 2px solid #7F9DB9 !important;
+    border-radius: 2px !important;
+}
+
+.address-bar:focus-within {
+    border-color: var(--accent-color) !important;
+}
+
+#address-input {
+    color: var(--text-primary) !important;
+    font-size: 12px !important;
+    font-family: 'Tahoma', sans-serif !important;
+}
+
+#address-input::placeholder {
+    color: #999999 !important;
+}
+
+.address-icon svg {
+    fill: var(--success-color) !important;
+}
+
+.action-btn {
+    background: transparent !important;
+    border-radius: 3px !important;
+}
+
+.action-btn:hover {
+    background: rgba(49,106,197,0.15) !important;
+}
+
+.action-btn svg {
+    fill: var(--text-secondary) !important;
+}
+
+.content-area {
+    background: #FFFFFF;
+}
+
+/* Home Page - kein !important damit inline background-image greift */
+.home-page:not(.has-custom-bg) {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F5F3E8 100%);
+}
+
+.home-title {
+    color: var(--primary-color) !important;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.home-subtitle {
+    color: var(--text-secondary) !important;
+}
+
+.home-search-bar {
+    background: #FFFFFF !important;
+    border: 2px solid #7F9DB9 !important;
+    border-radius: 3px !important;
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1) !important;
+}
+
+.home-search-bar:focus-within {
+    border-color: var(--accent-color) !important;
+}
+
+#home-search-input {
+    color: var(--text-primary) !important;
+}
+
+.home-search-icon {
+    fill: var(--text-secondary) !important;
+}
+
+.quick-access-title {
+    color: var(--text-primary) !important;
+}
+
+.add-quick-access {
+    color: var(--accent-color) !important;
+    background: transparent !important;
+    border: 1px solid var(--accent-color) !important;
+    border-radius: 3px !important;
+    font-size: 11px !important;
+}
+
+.add-quick-access:hover {
+    background: rgba(49,106,197,0.1) !important;
+}
+
+.quick-access-item:not(.has-custom-bg .quick-access-item) {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F0EDE0 100%) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.1) !important;
+}
+
+.quick-access-item:not(.has-custom-bg .quick-access-item):hover {
+    background: linear-gradient(180deg, #FFFFFF 0%, #D6E8FF 100%) !important;
+    border-color: var(--accent-color) !important;
+}
+
+.quick-access-name {
+    color: var(--text-primary) !important;
+    font-size: 11px !important;
+}
+
+/* Custom BG overrides für XP-Theme */
+.home-page.has-custom-bg .home-header {
+    background: rgba(236, 233, 216, 0.82) !important;
+    border: 1px solid rgba(172, 168, 153, 0.8) !important;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+.home-page.has-custom-bg .home-title {
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9), 0 0 8px rgba(255,255,255,0.6) !important;
+}
+
+.home-page.has-custom-bg .home-subtitle {
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9) !important;
+}
+
+.home-page.has-custom-bg .home-search-bar {
+    background: rgba(255, 255, 255, 0.88) !important;
+    border: 2px solid #7F9DB9 !important;
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.2) !important;
+}
+
+.home-page.has-custom-bg .quick-access {
+    background: rgba(236, 233, 216, 0.82) !important;
+    border: 1px solid rgba(172, 168, 153, 0.8) !important;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+.home-page.has-custom-bg .quick-access-title {
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8) !important;
+}
+
+.home-page.has-custom-bg .quick-access-item {
+    background: rgba(255, 255, 255, 0.78) !important;
+    border: 1px solid rgba(172, 168, 153, 0.9) !important;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.2) !important;
+}
+
+.home-page.has-custom-bg .quick-access-item:hover {
+    background: rgba(214, 232, 255, 0.88) !important;
+    border-color: var(--accent-color) !important;
+}
+
+.home-page.has-custom-bg .quick-access-name {
+    text-shadow: none !important;
+}
+
+.home-page.has-custom-bg .add-quick-access {
+    background: rgba(255, 255, 255, 0.7) !important;
+}
+
+.modal-content {
+    background: var(--bg-primary) !important;
+    border: 2px solid var(--accent-color) !important;
+    border-radius: 6px !important;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.3) !important;
+}
+
+.modal-header {
+    background: linear-gradient(180deg, #0A246A 0%, #3A6EA5 8%, #3A6EA5 92%, #0A246A 100%) !important;
+    border-radius: 4px 4px 0 0 !important;
+    padding: 6px 12px !important;
+}
+
+.modal-header h2 {
+    color: #FFFFFF !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+}
+
+.modal-close {
+    background: linear-gradient(180deg, #E47B6F 0%, #C9584A 45%, #B33526 55%, #A42A1C 100%) !important;
+    border: 1px solid #7A2413 !important;
+    border-radius: 3px !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.modal-close svg {
+    fill: white !important;
+}
+
+.modal-close:hover {
+    background: linear-gradient(180deg, #F09E94 0%, #E07A6C 45%, #D45A4A 55%, #C94A3A 100%) !important;
+}
+
+.modal-overlay {
+    background: rgba(0,0,0,0.3) !important;
+}
+
+.settings-sidebar {
+    background: var(--bg-secondary) !important;
+    border-right: 1px solid var(--border-color) !important;
+}
+
+.settings-nav-btn {
+    color: var(--text-primary) !important;
+    font-size: 11px !important;
+    border-radius: 3px !important;
+}
+
+.settings-nav-btn.active {
+    background: var(--accent-color) !important;
+    color: white !important;
+}
+
+.settings-nav-btn:hover:not(.active) {
+    background: rgba(49,106,197,0.15) !important;
+}
+
+.setting-group-title {
+    color: var(--primary-color) !important;
+    font-size: 13px !important;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 6px;
+}
+
+.setting-item {
+    border-bottom: 1px solid rgba(172,168,153,0.3) !important;
+}
+
+.setting-item h3 {
+    color: var(--text-primary) !important;
+    font-size: 12px !important;
+}
+
+.setting-item p {
+    color: var(--text-secondary) !important;
+    font-size: 11px !important;
+}
+
+.toggle-switch {
+    background: #B5B2A4 !important;
+    border-radius: 3px !important;
+}
+
+.toggle-switch.active {
+    background: var(--accent-color) !important;
+}
+
+.toggle-handle {
+    border-radius: 2px !important;
+}
+
+.setting-select {
+    background: #FFFFFF !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 2px !important;
+    color: var(--text-primary) !important;
+    font-size: 11px !important;
+    font-family: 'Tahoma', sans-serif !important;
+    padding: 3px 6px !important;
+}
+
+.setting-btn {
+    background: linear-gradient(180deg, #FFFFFF 0%, #ECE9D8 100%) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 3px !important;
+    color: var(--text-primary) !important;
+    font-size: 11px !important;
+    padding: 4px 14px !important;
+    font-family: 'Tahoma', sans-serif !important;
+}
+
+.setting-btn:hover {
+    background: linear-gradient(180deg, #FFFFFF 0%, #D6E8FF 100%) !important;
+    border-color: var(--accent-color) !important;
+}
+
+.setting-input {
+    background: #FFFFFF !important;
+    border: 2px solid #7F9DB9 !important;
+    border-radius: 2px !important;
+    color: var(--text-primary) !important;
+    font-size: 11px !important;
+    font-family: 'Tahoma', sans-serif !important;
+}
+
+::-webkit-scrollbar {
+    width: 17px;
+    height: 17px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F1EFE2;
+    border: 1px solid #ACA899;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #ECE9D8, #D6D2C2);
+    border: 1px solid #ACA899;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, #D6E8FF, #B8D4F5);
+    border-color: var(--accent-color);
+}
+
+::-webkit-scrollbar-button {
+    background: linear-gradient(180deg, #FFFFFF 0%, #ECE9D8 100%);
+    border: 1px solid #ACA899;
+    display: block;
+    height: 17px;
+    width: 17px;
+}
+
+.logo-circle {
+    border-color: var(--accent-color) !important;
+    opacity: 0.3;
+}
+
+.logo-inner {
+    background: linear-gradient(135deg, #0054E3, #3A6EA5) !important;
+}
+
+.bookmark-star-btn .star-filled {
+    fill: #FFD700 !important;
+}
+
+.notification {
+    background: var(--bg-primary) !important;
+    border: 2px solid var(--accent-color) !important;
+    border-radius: 4px !important;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3) !important;
+}
+
+.notification-text {
+    color: var(--text-primary) !important;
+}
+
+.notification-btn-primary {
+    background: linear-gradient(180deg, #FFFFFF 0%, #ECE9D8 100%) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: 3px !important;
+}
+
+.notification-btn-primary:hover {
+    background: linear-gradient(180deg, #FFFFFF 0%, #D6E8FF 100%) !important;
+    border-color: var(--accent-color) !important;
+}
+
+.notification-btn-secondary {
+    background: linear-gradient(180deg, #FFFFFF 0%, #ECE9D8 100%) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: 3px !important;
+}
+
+#custom-context-menu {
+    background: var(--bg-primary) !important;
+    border: 2px solid var(--accent-color) !important;
+    border-radius: 3px !important;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.3) !important;
+    font-family: 'Tahoma', sans-serif !important;
+    font-size: 11px !important;
+}
+
+.ctx-item:hover {
+    background: var(--accent-color) !important;
+}
+
+.ctx-separator {
+    background: var(--border-color) !important;
+}
+
+.stat-progress {
+    background: #D6D2C2 !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 2px !important;
+}
+
+.extension-item {
+    background: var(--bg-tertiary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 3px !important;
+}
+
+.extension-name {
+    color: var(--text-primary) !important;
+}
+
+.extension-version, .extension-id {
+    color: var(--text-secondary) !important;
+}

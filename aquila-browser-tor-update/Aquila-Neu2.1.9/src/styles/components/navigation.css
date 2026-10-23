@@ -1,0 +1,168 @@
+.navigation-bar {
+    height: clamp(40px, 5vh, 48px);
+    background: rgba(0, 30, 60, 0.9);
+    display: flex;
+    align-items: center;
+    padding: 0 clamp(8px, 1vw, 12px);
+    gap: clamp(6px, 0.8vw, 12px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.nav-controls {
+    display: flex;
+    gap: clamp(4px, 0.5vw, 6px);
+}
+
+.nav-btn {
+    width: clamp(30px, 2.8vw, 36px);
+    height: clamp(30px, 2.8vw, 36px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: rgba(0, 119, 255, 0.2);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.nav-btn svg {
+    width: clamp(15px, 1.4vw, 18px);
+    height: clamp(15px, 1.4vw, 18px);
+    fill: var(--text-primary);
+}
+
+.address-bar {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 0.8vw, 10px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 0 clamp(10px, 1.2vw, 16px);
+    height: clamp(32px, 4vh, 38px);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.address-bar:focus-within {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(0, 119, 255, 0.2);
+}
+
+.address-icon {
+    width: 14px;
+    height: 14px;
+    fill: rgba(255, 255, 255, 0.5);
+    flex-shrink: 0;
+}
+
+.address-bar input,
+#address-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-size: clamp(12px, 1.1vw, 14px);
+    font-family: inherit;
+}
+
+.address-bar input::placeholder,
+#address-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.bookmark-star-btn {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.bookmark-star-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: rgba(255, 255, 255, 0.5);
+    transition: fill 0.2s;
+}
+
+.bookmark-star-btn .star-filled {
+    fill: #fbbf24;
+}
+
+.bookmark-star-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.bookmark-star-btn:hover svg {
+    fill: #fbbf24;
+}
+
+.nav-actions {
+    display: flex;
+    gap: clamp(4px, 0.5vw, 6px);
+}
+
+.action-btn {
+    width: clamp(30px, 2.8vw, 36px);
+    height: clamp(30px, 2.8vw, 36px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    position: relative;
+}
+
+.action-btn:hover {
+    background: rgba(0, 119, 255, 0.2);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.action-btn svg {
+    width: clamp(15px, 1.4vw, 18px);
+    height: clamp(15px, 1.4vw, 18px);
+    fill: var(--text-primary);
+}
+
+@media (max-width: 1366px) {
+    .nav-actions {
+        gap: 3px;
+    }
+    .nav-controls {
+        gap: 3px;
+    }
+}
+
+@media (max-height: 768px) {
+    .navigation-bar {
+        height: 40px;
+    }
+    .address-bar {
+        height: 32px;
+    }
+}

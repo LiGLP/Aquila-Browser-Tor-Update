@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aquila Update</title>
+<link id="theme-stylesheet" rel="stylesheet" href="styles/themes/aquila-modern.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-primary, #001122);
+    color: var(--text-primary, #fff);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-app-region: drag;
+  }
+
+  .particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .particle {
+    position: absolute;
+    background: color-mix(in srgb, var(--primary-color, #0077ff) 30%, transparent);
+    border-radius: 50%;
+    animation: particleFloat 15s infinite linear;
+  }
+
+  @keyframes particleFloat {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-app-region: no-drag;
+    width: 500px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo-container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: logoFloat 2.5s ease-in-out infinite;
+  }
+
+  @keyframes logoFloat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  .logo-circle {
+    position: absolute;
+    width: 100%; height: 100%;
+    border: 2px solid rgba(0, 119, 255, 0.3);
+    border-radius: 50%;
+  }
+
+  .logo-circle:nth-child(1) { border-color: color-mix(in srgb, var(--primary-color, #0077ff) 60%, transparent); }
+  .logo-circle:nth-child(2) { border-color: color-mix(in srgb, var(--primary-color, #0077ff) 40%, transparent); transform: scale(0.8); }
+  .logo-circle:nth-child(3) { border-color: color-mix(in srgb, var(--primary-color, #0077ff) 20%, transparent); transform: scale(0.6); }
+
+  .logo-inner {
+    position: absolute;
+    width: 40px; height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .crown { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+
+  .crown svg {
+    width: 100%; height: 100%;
+    animation: crownPulse 2s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 15px color-mix(in srgb, var(--primary-color, #0077ff) 80%, transparent));
+  }
+
+  @keyframes crownPulse {
+    0% { filter: drop-shadow(0 0 10px color-mix(in srgb, var(--primary-color, #0077ff) 60%, transparent)); }
+    100% { filter: drop-shadow(0 0 24px var(--primary-color, #0077ff)); }
+  }
+
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary, #fff);
+    text-shadow: 0 0 30px color-mix(in srgb, var(--primary-color, #0077ff) 60%, transparent);
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--text-secondary, rgba(255,255,255,0.55));
+    margin-bottom: 24px;
+  }
+
+  .version-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .version-box {
+    background: var(--bg-secondary, rgba(255,255,255,0.05));
+    border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+    border-radius: 10px;
+    padding: 6px 18px;
+    font-size: 11px;
+    color: var(--text-secondary, rgba(255,255,255,0.45));
+  }
+
+  .version-box span {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary, #fff);
+    margin-top: 2px;
+  }
+
+  .version-box.new {
+    border-color: color-mix(in srgb, var(--primary-color, #0077ff) 50%, transparent);
+    background: color-mix(in srgb, var(--primary-color, #0077ff) 8%, transparent);
+  }
+
+  .version-box.new span { color: var(--primary-color, #4db3ff); }
+
+  .arrow { font-size: 20px; color: var(--primary-color, #0077ff); }
+
+  .changelog {
+    width: 100%;
+    background: var(--bg-secondary, rgba(0,0,0,0.3));
+    border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .changelog-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.06));
+    background: color-mix(in srgb, var(--primary-color, #0077ff) 6%, transparent);
+  }
+
+  .changelog-header svg {
+    width: 14px; height: 14px;
+    fill: var(--primary-color, #4db3ff);
+    flex-shrink: 0;
+  }
+
+  .changelog-header span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-color, #4db3ff);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .changelog-body {
+    padding: 12px 16px;
+    max-height: 180px;
+    overflow-y: auto;
+    text-align: left;
+  }
+
+  .changelog-body::-webkit-scrollbar { width: 4px; }
+  .changelog-body::-webkit-scrollbar-track { background: transparent; }
+  .changelog-body::-webkit-scrollbar-thumb { background: var(--border-color, rgba(255,255,255,0.1)); border-radius: 99px; }
+
+  .cl-section { margin-bottom: 12px; }
+  .cl-section:last-child { margin-bottom: 0; }
+
+  .cl-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cl-section-title.added { color: #4ade80; }
+  .cl-section-title.fixed { color: #fb923c; }
+  .cl-section-title.changed { color: #60a5fa; }
+  .cl-section-title.removed { color: #f87171; }
+
+  .cl-section-title .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .cl-section-title.added .dot { background: #4ade80; }
+  .cl-section-title.fixed .dot { background: #fb923c; }
+  .cl-section-title.changed .dot { background: #60a5fa; }
+  .cl-section-title.removed .dot { background: #f87171; }
+
+  .cl-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary, rgba(255,255,255,0.7));
+    line-height: 1.5;
+    padding: 2px 0;
+  }
+
+  .cl-item::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--border-color, rgba(255,255,255,0.3));
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .cl-raw {
+    font-size: 13px;
+    color: var(--text-secondary, rgba(255,255,255,0.6));
+    line-height: 1.7;
+    white-space: pre-line;
+  }
+
+  .progress-wrap {
+    width: 100%;
+    margin-bottom: 14px;
+    display: none;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-secondary, rgba(255,255,255,0.5));
+    margin-bottom: 8px;
+  }
+
+  .progress-bar-bg {
+    height: 5px;
+    background: var(--bg-secondary, rgba(255,255,255,0.08));
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--primary-color, #0077ff);
+    border-radius: 99px;
+    transition: width 0.2s ease;
+    box-shadow: 0 0 8px color-mix(in srgb, var(--primary-color, #0077ff) 50%, transparent);
+  }
+
+  .status {
+    font-size: 13px;
+    color: var(--text-secondary, rgba(255,255,255,0.55));
+    margin-bottom: 16px;
+    min-height: 16px;
+    animation: statusPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes statusPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--primary-color, #0077ff);
+    color: #fff;
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--primary-color, #0077ff) 30%, transparent);
+  }
+
+  .btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; filter: none; }
+
+  .btn-skip {
+    background: transparent;
+    border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+    color: var(--text-secondary, rgba(255,255,255,0.35));
+    box-shadow: none;
+    margin-top: 8px;
+    font-size: 13px;
+    padding: 9px;
+  }
+
+  .btn-skip:hover { color: var(--text-primary, rgba(255,255,255,0.65)); border-color: var(--border-color, rgba(255,255,255,0.2)); filter: none; }
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <div class="logo-container">
+    <div class="logo-circle"></div>
+    <div class="logo-circle"></div>
+    <div class="logo-circle"></div>
+    <div class="logo-inner">
+      <div class="crown">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+          <path d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <h1>Aquila</h1>
+  <p class="subtitle">Update verfügbar</p>
+
+  <div class="version-row">
+    <div class="version-box">
+      Aktuell
+      <span id="cur-version">–</span>
+    </div>
+    <div class="arrow">→</div>
+    <div class="version-box new">
+      Neu
+      <span id="new-version">–</span>
+    </div>
+  </div>
+
+  <div class="changelog">
+    <div class="changelog-header">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M10,19L6.5,15.5L7.91,14.09L10,16.17L16.09,10.08L17.5,11.5L10,19Z"/></svg>
+      <span>Changelog</span>
+    </div>
+    <div class="changelog-body" id="changelog-body">
+      <span class="cl-raw" style="color:var(--text-secondary, rgba(255,255,255,0.3))">Lade Informationen...</span>
+    </div>
+  </div>
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-label">
+      <span>Wird heruntergeladen...</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  </div>
+
+  <p class="status" id="status"></p>
+
+  <button class="btn" id="btn-install">Jetzt installieren</button>
+  <button class="btn btn-skip" id="btn-skip">Überspringen und Browser starten</button>
+</div>
+
+<script>
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.width = Math.random() * 10 + 5 + 'px';
+    p.style.height = p.style.width;
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 15 + 's';
+    document.getElementById('particles').appendChild(p);
+  }
+
+  function renderChangelog(raw) {
+    const body = document.getElementById('changelog-body');
+    if (!raw || !raw.trim()) {
+      body.innerHTML = '<span class="cl-raw" style="color:var(--text-secondary,rgba(255,255,255,0.3))">Keine Infos vorhanden.</span>';
+      return;
+    }
+
+    const sectionMap = {
+      'added':   { label: 'Neu hinzugefügt', cls: 'added' },
+      'neu':     { label: 'Neu hinzugefügt', cls: 'added' },
+      'new':     { label: 'Neu hinzugefügt', cls: 'added' },
+      'fixed':   { label: 'Behoben',         cls: 'fixed' },
+      'fixes':   { label: 'Behoben',         cls: 'fixed' },
+      'behoben': { label: 'Behoben',         cls: 'fixed' },
+      'changed': { label: 'Geändert',        cls: 'changed' },
+      'geändert':{ label: 'Geändert',        cls: 'changed' },
+      'removed': { label: 'Entfernt',        cls: 'removed' },
+      'entfernt':{ label: 'Entfernt',        cls: 'removed' },
+    };
+
+    const lines = raw.split('\n');
+    const hasStructure = lines.some(l => /^#{1,3}\s/.test(l.trim()));
+
+    if (!hasStructure) {
+      const sections = {};
+      let currentSection = null;
+      let loose = [];
+
+      lines.forEach(line => {
+        const t = line.trim();
+        if (!t) return;
+        const headerMatch = t.match(/^\*{0,2}([^*:]+)\*{0,2}:?\s*$/);
+        if (headerMatch) {
+          const key = headerMatch[1].toLowerCase().trim();
+          if (sectionMap[key]) { currentSection = key; if (!sections[key]) sections[key] = []; return; }
+        }
+        const bullet = t.replace(/^[-*•]\s*/, '');
+        if (currentSection) sections[currentSection].push(bullet);
+        else loose.push(bullet);
+      });
+
+      if (Object.keys(sections).length === 0) {
+        body.innerHTML = `<span class="cl-raw">${raw.trim()}</span>`;
+        return;
+      }
+
+      let html = '';
+      for (const [key, items] of Object.entries(sections)) {
+        const meta = sectionMap[key];
+        html += `<div class="cl-section"><div class="cl-section-title ${meta.cls}"><div class="dot"></div>${meta.label}</div>${items.map(i => `<div class="cl-item">${i}</div>`).join('')}</div>`;
+      }
+      if (loose.length) html += loose.map(l => `<div class="cl-item">${l}</div>`).join('');
+      body.innerHTML = html;
+      return;
+    }
+
+    let html = '';
+    let currentSection = null;
+    let currentItems = [];
+
+    function flushSection() {
+      if (!currentSection && currentItems.length === 0) return;
+      if (currentSection) {
+        const meta = sectionMap[currentSection.toLowerCase()];
+        const cls = meta ? meta.cls : 'changed';
+        const label = meta ? meta.label : currentSection;
+        html += `<div class="cl-section"><div class="cl-section-title ${cls}"><div class="dot"></div>${label}</div>${currentItems.map(i => `<div class="cl-item">${i}</div>`).join('')}</div>`;
+      } else {
+        html += currentItems.map(i => `<div class="cl-item">${i}</div>`).join('');
+      }
+      currentItems = [];
+      currentSection = null;
+    }
+
+    lines.forEach(line => {
+      const t = line.trim();
+      if (!t) return;
+      const hMatch = t.match(/^#{1,3}\s+(.+)$/);
+      if (hMatch) { flushSection(); currentSection = hMatch[1].trim(); return; }
+      const bulletMatch = t.match(/^[-*•]\s+(.+)$/);
+      currentItems.push(bulletMatch ? bulletMatch[1] : t);
+    });
+    flushSection();
+
+    body.innerHTML = html || `<span class="cl-raw">${raw.trim()}</span>`;
+  }
+
+  if (typeof require !== 'undefined') {
+    const { ipcRenderer } = require('electron');
+
+    ipcRenderer.invoke('get-data').then(data => {
+      const theme = (data.settings && data.settings.theme) || 'aquila-modern';
+      document.getElementById('theme-stylesheet').href = `styles/themes/${theme}.css`;
+    }).catch(() => {});
+
+    const curV       = document.getElementById('cur-version');
+    const newV       = document.getElementById('new-version');
+    const status     = document.getElementById('status');
+    const progressWrap = document.getElementById('progress-wrap');
+    const progressBar  = document.getElementById('progress-bar');
+    const progressPct  = document.getElementById('progress-pct');
+    const btnInstall   = document.getElementById('btn-install');
+    const btnSkip      = document.getElementById('btn-skip');
+
+    let updateInfo = null;
+
+    ipcRenderer.on('update-info', (_, info) => {
+      updateInfo = info;
+      curV.textContent = `v${info.currentVersion}`;
+      newV.textContent = `v${info.remoteVersion}`;
+      renderChangelog(info.releaseNotes || '');
+    });
+
+    ipcRenderer.on('update-download-progress', (_, { percent }) => {
+      progressBar.style.width = `${percent}%`;
+      progressPct.textContent = `${percent}%`;
+    });
+
+    btnInstall.addEventListener('click', async () => {
+      if (!updateInfo) return;
+      btnInstall.disabled = true;
+      btnSkip.disabled = true;
+      progressWrap.style.display = 'block';
+      status.textContent = 'Download läuft...';
+
+      const result = await ipcRenderer.invoke('download-install-update', {
+        fileName: updateInfo.fileName,
+        sha256: updateInfo.sha256
+      });
+
+      if (!result.success) {
+        status.textContent = 'Fehler: ' + result.error;
+        btnInstall.disabled = false;
+        btnSkip.disabled = false;
+        progressWrap.style.display = 'none';
+      } else {
+        status.textContent = 'Installer wird gestartet...';
+      }
+    });
+
+    btnSkip.addEventListener('click', () => ipcRenderer.send('skip-update'));
+  }
+</script>
+</body>
+</html>

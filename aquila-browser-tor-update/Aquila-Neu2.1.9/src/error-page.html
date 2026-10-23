@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbindung fehlgeschlagen</title>
+    <script>
+        (function() {
+            var theme = new URLSearchParams(window.location.search).get('theme') || 'aquila-modern';
+            document.write('<link id="theme-stylesheet" rel="stylesheet" href="styles/themes/' + theme + '.css">');
+        })();
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary, #001122);
+            color: var(--text-primary, #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .error-container {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .error-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        .error-icon svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px color-mix(in srgb, var(--primary-color, #0077ff) 30%, transparent));
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary, #fff);
+        }
+
+        .error-message {
+            font-size: 18px;
+            color: var(--text-secondary, rgba(255,255,255,0.7));
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .error-url {
+            font-size: 14px;
+            color: var(--text-secondary, rgba(255,255,255,0.5));
+            word-break: break-all;
+            margin-bottom: 30px;
+            font-family: monospace;
+            opacity: 0.7;
+        }
+
+        .error-code {
+            display: inline-block;
+            background: rgba(220, 38, 38, 0.12);
+            border: 1px solid rgba(220, 38, 38, 0.35);
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 14px;
+            color: #ef4444;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-color, #0077ff);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.88;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary, rgba(255,255,255,0.07));
+            color: var(--text-primary, #fff);
+            border: 1px solid var(--border-color, rgba(255,255,255,0.15));
+        }
+
+        .btn-secondary:hover {
+            background: var(--hover-color, rgba(255,255,255,0.12));
+            transform: translateY(-2px);
+        }
+
+        .suggestions {
+            margin-top: 40px;
+            text-align: left;
+            background: var(--bg-secondary, rgba(255,255,255,0.04));
+            border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .suggestions h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--text-primary, rgba(255,255,255,0.9));
+        }
+
+        .suggestions ul {
+            list-style: none;
+        }
+
+        .suggestions li {
+            padding: 8px 0;
+            color: var(--text-secondary, rgba(255,255,255,0.6));
+            font-size: 14px;
+            line-height: 1.6;
+            padding-left: 1.5em;
+            position: relative;
+        }
+
+        .suggestions li::before {
+            content: "•";
+            color: var(--primary-color, #0077ff);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">
+            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="55" stroke="var(--primary-color, #0077FF)" stroke-width="3" fill="none"/>
+                <circle cx="60" cy="60" r="45" stroke="var(--primary-color, #0077FF)" stroke-width="2" opacity="0.3" fill="none"/>
+                <path d="M 60 35 L 60 70" stroke="var(--primary-color, #0077FF)" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="60" cy="82" r="3" fill="var(--primary-color, #0077FF)"/>
+            </svg>
+        </div>
+
+        <h1>Verbindung fehlgeschlagen</h1>
+
+        <p class="error-message" id="error-description">
+            Die Webseite konnte nicht geladen werden.
+        </p>
+
+        <p class="error-url" id="failed-url"></p>
+
+        <div class="error-code" id="error-code"></div>
+
+        <div class="error-actions">
+            <button class="btn btn-primary" onclick="retry()">Erneut versuchen</button>
+            <button class="btn btn-secondary" onclick="goBack()">Zurück</button>
+        </div>
+
+        <div class="suggestions">
+            <h3>Mögliche Lösungen:</h3>
+            <ul id="suggestions-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorCode = urlParams.get('code') || '-1';
+        const errorUrl = urlParams.get('url') || 'Unbekannt';
+        const errorDescription = urlParams.get('description') || 'Unbekannter Fehler';
+
+        document.getElementById('error-code').textContent = `Fehlercode: ${errorCode}`;
+        document.getElementById('failed-url').textContent = errorUrl;
+        document.getElementById('error-description').textContent = errorDescription;
+
+        const suggestions = document.getElementById('suggestions-list');
+
+        const suggestionMap = {
+            '-105': ['Überprüfe deine Internetverbindung', 'Stelle sicher, dass dein DNS-Server erreichbar ist', 'Versuche eine andere DNS-Adresse (z.B. 8.8.8.8)'],
+            '-106': ['Überprüfe deine Internetverbindung', 'Stelle sicher, dass dein DNS-Server erreichbar ist', 'Versuche eine andere DNS-Adresse (z.B. 8.8.8.8)'],
+            '-200': ['Diese Seite unterstützt kein sicheres HTTPS', 'Deaktiviere "HTTPS bevorzugen" in den Einstellungen', 'Das SSL-Zertifikat der Seite könnte ungültig sein'],
+            '-201': ['Diese Seite unterstützt kein sicheres HTTPS', 'Deaktiviere "HTTPS bevorzugen" in den Einstellungen', 'Das SSL-Zertifikat der Seite könnte ungültig sein'],
+            '-107': ['Diese Seite unterstützt kein sicheres HTTPS', 'Deaktiviere "HTTPS bevorzugen" in den Einstellungen', 'Das SSL-Zertifikat der Seite könnte ungültig sein'],
+            '-102': ['Die Verbindung zum Server wurde abgelehnt', 'Der Server könnte offline oder nicht erreichbar sein', 'Überprüfe, ob die Firewall die Verbindung blockiert'],
+            '-104': ['Die Verbindung zum Server wurde abgelehnt', 'Der Server könnte offline oder nicht erreichbar sein', 'Überprüfe, ob die Firewall die Verbindung blockiert'],
+            '-7':   ['Die Verbindung wurde unterbrochen', 'Überprüfe deine Internetverbindung', 'Versuche es später erneut'],
+        };
+
+        const items = suggestionMap[errorCode] || ['Überprüfe deine Internetverbindung', 'Stelle sicher, dass die URL korrekt ist', 'Der Server könnte offline sein – versuche es später erneut'];
+        suggestions.innerHTML = items.map(s => `<li>${s}</li>`).join('');
+
+        function retry() {
+            const url = new URLSearchParams(window.location.search).get('url');
+            if (url) window.location.href = url;
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

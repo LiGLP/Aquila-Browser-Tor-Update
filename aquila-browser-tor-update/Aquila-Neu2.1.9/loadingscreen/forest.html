@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquila Loading – Forest</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #030d04;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .sky-gradient {
+            position: fixed; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(10,60,20,0.8) 0%, #030d04 65%);
+            z-index: 0;
+        }
+
+        .mist {
+            position: fixed; bottom: 0; left: 0;
+            width: 100%; height: 40%;
+            background: linear-gradient(0deg, rgba(30,80,30,0.15) 0%, transparent 100%);
+            animation: mistDrift 8s ease-in-out infinite alternate;
+            pointer-events: none; z-index: 1;
+        }
+
+        @keyframes mistDrift {
+            0%   { transform: translateX(-15px); opacity: 0.5; }
+            100% { transform: translateX(15px);  opacity: 0.9; }
+        }
+
+        .trees { position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2; pointer-events: none; }
+        .trees svg { display: block; width: 100%; }
+
+        .firefly-field { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
+
+        .firefly {
+            position: absolute;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: #aaff66;
+            box-shadow: 0 0 8px #88ff44, 0 0 16px rgba(136,255,68,0.4);
+            animation: fireflyDrift linear infinite;
+            will-change: transform, opacity;
+        }
+
+        @keyframes fireflyDrift {
+            0%   { transform: translate(0,0); opacity: 0; }
+            15%  { opacity: 1; }
+            50%  { transform: translate(var(--tx), var(--ty)); opacity: 0.8; }
+            85%  { opacity: 1; }
+            100% { transform: translate(calc(var(--tx)*2), calc(var(--ty)*0.5)); opacity: 0; }
+        }
+
+        .loading-container {
+            position: relative; z-index: 6;
+            text-align: center;
+            animation: fadeIn 0.7s ease-out;
+            margin-top: -80px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-wrap {
+            width: 110px; height: 110px;
+            margin: 0 auto 36px;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .leaf-ring {
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            border: 2px solid rgba(80,200,80,0.35);
+            animation: leafSpin 12s linear infinite;
+        }
+
+        .leaf-ring::before, .leaf-ring::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 10px;
+            background: rgba(100,220,80,0.7);
+            border-radius: 50% 0 50% 0;
+            box-shadow: 0 0 8px rgba(100,220,80,0.6);
+        }
+
+        .leaf-ring::before { top: -5px; left: 50%; transform: translateX(-50%); }
+        .leaf-ring::after  { bottom: -5px; left: 50%; transform: translateX(-50%) rotate(180deg); }
+
+        @keyframes leafSpin { to { transform: rotate(360deg); } }
+
+        .leaf-ring-2 {
+            inset: 16px;
+            border-color: rgba(60,180,60,0.25);
+            animation: leafSpin 8s linear infinite reverse;
+        }
+
+        .leaf-ring-2::before, .leaf-ring-2::after { width: 7px; height: 7px; background: rgba(80,200,70,0.5); }
+
+        .center-icon {
+            position: relative;
+            filter: drop-shadow(0 0 12px rgba(80,220,80,0.8));
+            animation: iconBreath 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes iconBreath {
+            0%   { filter: drop-shadow(0 0 8px rgba(60,200,60,0.6)); transform: scale(0.95); }
+            100% { filter: drop-shadow(0 0 22px rgba(100,255,80,0.9)); transform: scale(1.05); }
+        }
+
+        .loading-title {
+            font-size: 52px; font-weight: 700; letter-spacing: 3px;
+            background: linear-gradient(180deg, #ccffaa 0%, #44cc44 50%, #1a6622 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            filter: drop-shadow(0 0 14px rgba(80,200,80,0.5));
+            animation: titleBreath 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleBreath {
+            0%   { filter: drop-shadow(0 0 8px rgba(60,180,60,0.4)); }
+            100% { filter: drop-shadow(0 0 20px rgba(100,255,80,0.7)); }
+        }
+
+        .loading-subtitle {
+            font-size: 12px; letter-spacing: 5px;
+            text-transform: uppercase;
+            color: rgba(120,210,100,0.6);
+            margin-top: 8px; margin-bottom: 44px;
+        }
+
+        .root-track {
+            width: 300px; height: 3px;
+            margin: 0 auto 14px;
+            background: rgba(40,100,30,0.3);
+        }
+
+        .root-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1a6622, #44cc44, #aaff66);
+            box-shadow: 0 0 10px rgba(80,220,80,0.7), 0 0 24px rgba(60,180,60,0.3);
+            animation: rootGrow 3s ease-in-out forwards;
+        }
+
+        @keyframes rootGrow {
+            0%  { width: 0%; }
+            60% { width: 100%; }
+            100%{ width: 100%; }
+        }
+
+        .loading-text {
+            font-size: 11px; letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(100,200,80,0.5);
+            animation: breathText 2.5s ease-in-out infinite;
+        }
+
+        @keyframes breathText {
+            0%, 100% { opacity: 0.5; }
+            50%       { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sky-gradient"></div>
+    <div class="mist"></div>
+
+    <div class="trees">
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <g fill="#0a1f0b">
+                <polygon points="0,200 60,80 120,200"/><polygon points="80,200 150,50 220,200"/>
+                <polygon points="180,200 260,70 340,200"/><polygon points="290,200 380,30 470,200"/>
+                <polygon points="420,200 500,60 580,200"/><polygon points="530,200 630,20 730,200"/>
+                <polygon points="680,200 770,50 860,200"/><polygon points="820,200 910,35 1000,200"/>
+                <polygon points="950,200 1040,55 1130,200"/><polygon points="1080,200 1170,25 1260,200"/>
+                <polygon points="1200,200 1300,60 1400,200"/><polygon points="1330,200 1390,80 1450,200"/>
+            </g>
+            <g fill="#061409">
+                <polygon points="0,200 50,100 100,200"/><polygon points="120,200 200,65 280,200"/>
+                <polygon points="300,200 390,45 480,200"/><polygon points="500,200 600,30 700,200"/>
+                <polygon points="700,200 800,55 900,200"/><polygon points="880,200 990,20 1100,200"/>
+                <polygon points="1100,200 1200,45 1300,200"/><polygon points="1280,200 1370,75 1460,200"/>
+            </g>
+        </svg>
+    </div>
+
+    <div class="firefly-field" id="fireflies"></div>
+
+    <div class="loading-container">
+        <div class="logo-wrap">
+            <div class="leaf-ring"></div>
+            <div class="leaf-ring leaf-ring-2"></div>
+            <div class="center-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="38" height="38">
+                    <defs>
+                        <linearGradient id="forCrownGrad" x1="0" y1="1" x2="0" y2="0">
+                            <stop offset="0%" stop-color="#1a6622"/>
+                            <stop offset="100%" stop-color="#aaff66"/>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#forCrownGrad)" d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z"/>
+                </svg>
+            </div>
+        </div>
+        <h1 class="loading-title">Aquila</h1>
+        <p class="loading-subtitle" id="subtitle">Fast, Modern, Powerful</p>
+        <div class="root-track"><div class="root-fill"></div></div>
+        <p class="loading-text">Loading...</p>
+    </div>
+
+    <audio id="loading-sound"></audio>
+
+    <script>
+        const field = document.getElementById('fireflies');
+        const frag = document.createDocumentFragment();
+
+        for (let i = 0; i < 28; i++) {
+            const f = document.createElement('div');
+            f.className = 'firefly';
+            const tx = (Math.random() - 0.5) * 140;
+            const ty = -(Math.random() * 120 + 40);
+            f.style.cssText = `left:${Math.random()*100}%;top:${30+Math.random()*55}%;--tx:${tx}px;--ty:${ty}px;animation-duration:${Math.random()*6+5}s;animation-delay:${Math.random()*8}s;width:${Math.random()*2+2}px;height:${Math.random()*2+2}px;`;
+            frag.appendChild(f);
+        }
+        field.appendChild(frag);
+
+        const { ipcRenderer } = require('electron');
+
+        async function init() {
+            const audio = document.getElementById('loading-sound');
+            try {
+                const data = await ipcRenderer.invoke('get-data');
+                const settings = data?.settings || {};
+                if (settings.loadingSubtitle) {
+                    document.getElementById('subtitle').textContent = settings.loadingSubtitle;
+                }
+                const sound = settings.loadingSound || 'aquila.mp3';
+                audio.src = `sounds/${sound}`;
+                audio.play().catch(console.error);
+            } catch (e) {
+                audio.src = 'sounds/aquila.mp3';
+                audio.play().catch(console.error);
+            }
+        }
+
+        init();
+
+        ipcRenderer.on('subtitle', (event, text) => {
+            if (text) document.getElementById('subtitle').textContent = text;
+        });
+
+        ipcRenderer.on('sound', (event, sound) => {
+            const audio = document.getElementById('loading-sound');
+            audio.src = `sounds/${sound}`;
+            audio.play().catch(console.error);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+.tab-bar {
+    height: clamp(32px, 4.5vh, 38px);
+    background: rgba(0, 30, 60, 0.9);
+    display: flex;
+    align-items: center;
+    padding: 0 clamp(4px, 0.6vw, 8px);
+    border-bottom: 1px solid var(--border-color);
+    gap: clamp(4px, 0.6vw, 8px);
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.tab-bar::-webkit-scrollbar {
+    height: 0;
+}
+
+.tabs-container {
+    display: flex;
+    gap: clamp(2px, 0.3vw, 4px);
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.tabs-container::-webkit-scrollbar {
+    display: none;
+}
+
+.tab {
+    min-width: clamp(130px, 14vw, 180px);
+    max-width: clamp(180px, 20vw, 240px);
+    height: clamp(26px, 3.5vh, 32px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    padding: 0 clamp(8px, 1vw, 12px);
+    gap: clamp(5px, 0.7vw, 8px);
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.tab.active {
+    background: rgba(0, 119, 255, 0.15);
+    border-color: rgba(0, 119, 255, 0.3);
+}
+
+.tab.active::before {
+    background: var(--primary-color);
+}
+
+.tab:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.tab-favicon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.tab-favicon svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--text-primary);
+}
+
+.tab-title {
+    flex: 1;
+    font-size: clamp(10px, 1vw, 12px);
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-bookmark-icon {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.tab-close {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.tab-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-close svg {
+    width: 9px;
+    height: 9px;
+    fill: var(--text-primary);
+}
+
+.new-tab-btn {
+    width: clamp(26px, 2.5vw, 32px);
+    height: clamp(26px, 2.5vw, 32px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+body.newtab-inline .tabs-container {
+    flex: unset;
+}
+
+body.newtab-inline .new-tab-btn {
+    margin-right: auto;
+}
+
+body:not(.newtab-inline) .tabs-container {
+    flex: 1;
+}
+
+.new-tab-btn:hover {
+    background: rgba(0, 119, 255, 0.2);
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.new-tab-btn svg {
+    width: clamp(13px, 1.3vw, 16px);
+    height: clamp(13px, 1.3vw, 16px);
+    fill: var(--text-primary);
+}
+
+.tab-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-contents {
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-height: 768px) {
+    .tab-bar {
+        height: 32px;
+    }
+    .tab {
+        height: 26px;
+    }
+}
+
+@media (max-width: 1366px) {
+    .tab {
+        min-width: clamp(110px, 12vw, 160px);
+        max-width: clamp(160px, 18vw, 200px);
+    }
+}
+
+body.compact-tabs .tab-title {
+    font-size: clamp(9px, 0.85vw, 11px);
+}
+
+.tabs-icon-only .tab {
+    padding: 0;
+    justify-content: center;
+    gap: 0;
+}
+
+.tabs-icon-only .tab-title,
+.tabs-icon-only .tab-close,
+.tabs-icon-only .tab-bookmark-icon {
+    display: none !important;
+}
+
+.tabs-compact-auto .tab {
+    padding: 0 clamp(4px, 0.4vw, 6px);
+    gap: clamp(2px, 0.3vw, 4px);
+}
+
+.tabs-compact-auto .tab-title {
+    display: none !important;
+}
+
+.tabs-compact-auto .tab-bookmark-icon {
+    display: none !important;
+}
+
+.tabs-narrow .tab-bookmark-icon {
+    display: none !important;
+}

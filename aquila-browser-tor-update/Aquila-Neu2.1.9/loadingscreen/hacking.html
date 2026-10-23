@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacking Loading</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000000;
+            color: #00ff00;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+
+        .loading-container {
+            text-align: center;
+            z-index: 10;
+            animation: fadeIn 0.5s ease-out;
+            position: relative;
+            padding: 40px;
+            border: 2px solid #00ff00;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.3),
+                inset 0 0 20px rgba(0, 255, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 255, 0, 0.5);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .loading-logo-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logoGlitch 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlitch {
+            0%, 90%, 100% { 
+                transform: scale(1);
+            }
+            92% { 
+                transform: scale(1.1);
+            }
+            94% { 
+                transform: scale(0.95);
+            }
+            96% { 
+                transform: scale(1.05);
+            }
+        }
+
+        .logo-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(0, 255, 0, 0.4);
+            border-radius: 50%;
+        }
+
+        .logo-circle:nth-child(1) {
+            border-color: rgba(0, 255, 0, 0.6);
+        }
+
+        .logo-circle:nth-child(2) {
+            border-color: rgba(0, 255, 0, 0.4);
+            transform: scale(0.8);
+        }
+
+        .logo-circle:nth-child(3) {
+            border-color: rgba(0, 255, 0, 0.2);
+            transform: scale(0.6);
+        }
+
+        .logo-inner {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .crown {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 10px #00ff00);
+        }
+
+        .crown svg {
+            width: 100%;
+            height: 100%;
+            animation: crownGlowGreen 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes crownGlowGreen {
+            0% { 
+                filter: drop-shadow(0 0 10px #00ff00);
+                transform: scale(1);
+            }
+            100% { 
+                filter: drop-shadow(0 0 20px #00ff00);
+                transform: scale(1.1);
+            }
+        }
+
+        .terminal-header {
+            text-align: left;
+            font-size: 12px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid #00ff00;
+            width: 100%;
+        }
+
+        .loading-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 
+                0 0 10px #00ff00,
+                0 0 20px #00ff00,
+                0 0 30px #00ff00;
+            animation: titleFlicker 0.5s infinite alternate;
+            letter-spacing: 5px;
+        }
+
+        @keyframes titleFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .loading-subtitle {
+            font-size: 14px;
+            color: #00ff00;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0.3; }
+        }
+
+        .terminal-output {
+            text-align: left;
+            font-size: 12px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 255, 0, 0.03);
+            border-left: 3px solid #00ff00;
+            max-height: 150px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .terminal-line {
+            margin: 5px 0;
+            animation: typewriter 0.5s;
+        }
+
+        @keyframes typewriter {
+            from { width: 0; opacity: 0; }
+            to { width: 100%; opacity: 1; }
+        }
+
+        .terminal-line::before {
+            content: '> ';
+            color: #00ff00;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #00ff00;
+            width: 0;
+            animation: progress 3s infinite;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        @keyframes progress {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; }
+        }
+
+        .loading-text {
+            font-size: 11px;
+            color: #00ff00;
+            letter-spacing: 2px;
+            animation: textPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .hex-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            z-index: 1;
+        }
+
+        .glitch {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            animation: glitchAnimation 5s infinite;
+            opacity: 0;
+        }
+
+        @keyframes glitchAnimation {
+            0%, 90%, 100% { opacity: 0; }
+            92%, 94%, 96% { 
+                opacity: 0.3;
+                background: linear-gradient(90deg, 
+                    transparent 0%, 
+                    rgba(0, 255, 0, 0.1) 50%, 
+                    transparent 100%);
+            }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: #00ff00;
+            animation: cursorBlink 1s infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes cursorBlink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    <div class="hex-grid" id="hexGrid"></div>
+    <div class="glitch"></div>
+    
+    <div class="loading-container">
+        <div class="scan-line"></div>
+        
+        <div class="terminal-header">
+            AQUILA SECURITY TERMINAL v2.0.0<br>
+            SYSTEM ACCESS: GRANTED
+        </div>
+
+        <div class="loading-logo-container">
+            <div class="logo-circle"></div>
+            <div class="logo-circle"></div>
+            <div class="logo-circle"></div>
+            <div class="logo-inner">
+                <div class="crown">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#00ff00">
+                        <path d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <h1 class="loading-title">AQUILA</h1>
+        <p class="loading-subtitle" id="subtitle">INITIALIZING SECURE CONNECTION<span class="cursor"></span></p>
+        
+        <div class="terminal-output" id="terminal">
+            <div class="terminal-line">Loading security modules...</div>
+            <div class="terminal-line">Encrypting connection...</div>
+            <div class="terminal-line">Verifying SSL certificates...</div>
+            <div class="terminal-line">Starting browser engine...</div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <p class="loading-text">ACCESS LEVEL: ADMINISTRATOR</p>
+    </div>
+
+    <audio id="loading-sound"></audio>
+
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        const hexGrid = document.getElementById('hexGrid');
+        for (let i = 0; i < 20; i++) {
+            const hex = document.createElement('div');
+            hex.style.position = 'absolute';
+            hex.style.left = Math.random() * 100 + '%';
+            hex.style.top = Math.random() * 100 + '%';
+            hex.style.width = Math.random() * 30 + 20 + 'px';
+            hex.style.height = hex.style.width;
+            hex.style.border = '1px solid #00ff00';
+            hex.style.transform = 'rotate(45deg)';
+            hexGrid.appendChild(hex);
+        }
+
+        const terminalLines = [
+            'Checking system integrity...',
+            'Loading encryption keys...',
+            'Establishing secure tunnel...',
+            'Verifying user credentials...',
+            'Initializing ad-blocker...',
+            'Loading privacy filters...',
+            'Starting browser core...',
+            'System ready.'
+        ];
+
+        let lineIndex = 4;
+        const terminal = document.getElementById('terminal');
+
+        setInterval(() => {
+            if (lineIndex < terminalLines.length) {
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                line.textContent = terminalLines[lineIndex];
+                terminal.appendChild(line);
+                
+                if (terminal.children.length > 6) {
+                    terminal.removeChild(terminal.firstChild);
+                }
+                
+                lineIndex++;
+            } else {
+                lineIndex = 0;
+                terminal.innerHTML = '<div class="terminal-line">Loading security modules...</div>';
+            }
+        }, 800);
+
+        const { ipcRenderer } = require('electron');
+
+        async function init() {
+            try {
+                const data = await ipcRenderer.invoke('get-data');
+                const settings = data?.settings || {};
+                if (settings.loadingSubtitle) {
+                    document.getElementById('subtitle').innerHTML = settings.loadingSubtitle + '<span class="cursor"></span>';
+                }
+                const sound = settings.loadingSound || 'aquila.mp3';
+                const audio = document.getElementById('loading-sound');
+                audio.src = `sounds/${sound}`;
+                audio.play().catch(console.error);
+            } catch (e) {
+                const audio = document.getElementById('loading-sound');
+                audio.src = 'sounds/aquila.mp3';
+                audio.play().catch(console.error);
+            }
+        }
+
+        init();
+
+        ipcRenderer.on('subtitle', (event, text) => {
+            if (text) {
+                document.getElementById('subtitle').innerHTML = text + '<span class="cursor"></span>';
+            }
+        });
+
+        ipcRenderer.on('sound', (event, sound) => {
+            const audio = document.getElementById('loading-sound');
+            audio.src = `sounds/${sound}`;
+            audio.play().catch(console.error);
+        });
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>

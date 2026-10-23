@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Loading</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .nebula {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at center, 
+                rgba(138, 43, 226, 0.3) 0%, 
+                rgba(75, 0, 130, 0.2) 30%, 
+                rgba(72, 61, 139, 0.1) 50%, 
+                transparent 70%);
+            border-radius: 50%;
+            animation: nebulaRotate 30s linear infinite;
+        }
+
+        @keyframes nebulaRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .planet {
+            position: fixed;
+            bottom: -200px;
+            right: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle at 30% 30%, 
+                #4169E1 0%, 
+                #1E3A8A 50%, 
+                #0F172A 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset -50px -50px 100px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(65, 105, 225, 0.3);
+            animation: planetFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes planetFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .loading-container {
+            text-align: center;
+            z-index: 10;
+            animation: fadeIn 1s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-logo-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 40px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logoOrbit 8s linear infinite;
+        }
+
+        @keyframes logoOrbit {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .logo-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(138, 43, 226, 0.4);
+            border-radius: 50%;
+            animation: circleRotate 6s linear infinite;
+        }
+
+        .logo-circle:nth-child(1) {
+            animation-delay: 0s;
+            border-color: rgba(138, 43, 226, 0.7);
+        }
+
+        .logo-circle:nth-child(2) {
+            animation-delay: -2s;
+            border-color: rgba(138, 43, 226, 0.5);
+            transform: scale(0.8);
+        }
+
+        .logo-circle:nth-child(3) {
+            animation-delay: -4s;
+            border-color: rgba(138, 43, 226, 0.3);
+            transform: scale(0.6);
+        }
+
+        @keyframes circleRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo-inner {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .crown {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 30px rgba(138, 43, 226, 0.9));
+        }
+
+        .crown svg {
+            width: 100%;
+            height: 100%;
+            animation: crownGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes crownGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.6)); }
+            100% { filter: drop-shadow(0 0 40px rgba(138, 43, 226, 1)); }
+        }
+
+        .loading-title {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #8A2BE2, #9370DB, #BA55D3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(138, 43, 226, 0.5);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.6));
+            }
+            50% { 
+                filter: drop-shadow(0 0 40px rgba(138, 43, 226, 1));
+            }
+        }
+
+        .loading-subtitle {
+            font-size: 18px;
+            color: rgba(186, 85, 211, 0.8);
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+        }
+
+        .cosmic-ring {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 2px solid transparent;
+        }
+
+        .ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            border-top-color: #8A2BE2;
+            animation: ringRotate1 2s linear infinite;
+        }
+
+        .ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            border-right-color: #9370DB;
+            animation: ringRotate2 3s linear infinite reverse;
+        }
+
+        .ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            border-bottom-color: #BA55D3;
+            animation: ringRotate3 4s linear infinite;
+        }
+
+        @keyframes ringRotate1 {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes ringRotate2 {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes ringRotate3 {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: rgba(186, 85, 211, 0.6);
+            letter-spacing: 3px;
+            animation: textPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .shooting-star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            animation: shootingStar 3s linear infinite;
+        }
+
+        @keyframes shootingStar {
+            0% {
+                transform: translate(0, 0) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-300px, 300px) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        .meteor {
+            position: absolute;
+            width: 3px;
+            height: 80px;
+            background: linear-gradient(to bottom, 
+                rgba(138, 43, 226, 0) 0%, 
+                rgba(138, 43, 226, 0.8) 50%, 
+                rgba(138, 43, 226, 0) 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="nebula"></div>
+    <div class="planet"></div>
+    
+    <div class="loading-container">
+        <div class="loading-logo-container">
+            <div class="logo-circle"></div>
+            <div class="logo-circle"></div>
+            <div class="logo-circle"></div>
+            <div class="logo-inner">
+                <div class="crown">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                        <path d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <h1 class="loading-title">Aquila</h1>
+        <p class="loading-subtitle" id="subtitle">COSMIC JOURNEY</p>
+        
+        <div class="cosmic-ring">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+        </div>
+        
+        <p class="loading-text">INITIALIZING...</p>
+    </div>
+
+    <audio id="loading-sound"></audio>
+
+    <script>
+        const starsContainer = document.getElementById('stars');
+        
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 3 + 1 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            starsContainer.appendChild(star);
+        }
+
+        for (let i = 0; i < 5; i++) {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shooting-star';
+            shootingStar.style.top = Math.random() * 50 + '%';
+            shootingStar.style.left = Math.random() * 100 + '%';
+            shootingStar.style.animationDelay = Math.random() * 10 + 's';
+            shootingStar.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(shootingStar);
+        }
+
+        const { ipcRenderer } = require('electron');
+
+        async function init() {
+            try {
+                const data = await ipcRenderer.invoke('get-data');
+                const settings = data?.settings || {};
+                if (settings.loadingSubtitle) {
+                    document.getElementById('subtitle').textContent = settings.loadingSubtitle;
+                }
+                const sound = settings.loadingSound || 'aquila.mp3';
+                const audio = document.getElementById('loading-sound');
+                audio.src = `sounds/${sound}`;
+                audio.play().catch(console.error);
+            } catch (e) {
+                const audio = document.getElementById('loading-sound');
+                audio.src = 'sounds/aquila.mp3';
+                audio.play().catch(console.error);
+            }
+        }
+
+        init();
+
+        ipcRenderer.on('subtitle', (event, text) => {
+            if (text) {
+                document.getElementById('subtitle').textContent = text;
+            }
+        });
+
+        ipcRenderer.on('sound', (event, sound) => {
+            const audio = document.getElementById('loading-sound');
+            audio.src = `sounds/${sound}`;
+            audio.play().catch(console.error);
+        });
+    </script>
+</body>
+</html>

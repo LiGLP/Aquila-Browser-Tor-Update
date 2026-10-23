@@ -1,0 +1,212 @@
+.notification {
+    position: fixed;
+    top: clamp(60px, 8vh, 80px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    min-width: clamp(300px, 35vw, 400px);
+    max-width: clamp(420px, 50vw, 600px);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.notification-content {
+    padding: clamp(14px, 2vh, 20px) clamp(16px, 2vw, 24px);
+}
+
+.notification-text {
+    font-size: clamp(13px, 1.2vw, 16px);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 6px 0;
+}
+
+.notification-url {
+    font-size: clamp(11px, 1vw, 13px);
+    color: var(--text-secondary);
+    margin: 0 0 clamp(12px, 2vh, 20px) 0;
+    word-break: break-all;
+    font-family: monospace;
+}
+
+.notification-actions {
+    display: flex;
+    gap: clamp(8px, 1vw, 12px);
+    justify-content: flex-end;
+}
+
+.notification-btn {
+    padding: clamp(7px, 1vh, 10px) clamp(14px, 1.5vw, 20px);
+    border: none;
+    border-radius: 8px;
+    font-size: clamp(12px, 1.1vw, 14px);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.notification-btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.notification-btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.notification-btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.notification-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.permission-notification {
+    position: fixed;
+    top: clamp(60px, 8vh, 80px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10001;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    min-width: clamp(320px, 36vw, 420px);
+    max-width: clamp(360px, 42vw, 500px);
+    animation: slideDown 0.3s ease;
+}
+
+.permission-content {
+    padding: clamp(14px, 2vh, 20px) clamp(16px, 2vw, 24px);
+}
+
+.permission-header {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.2vw, 16px);
+    margin-bottom: clamp(10px, 1.5vh, 16px);
+}
+
+.permission-icon {
+    width: clamp(36px, 3.5vw, 48px);
+    height: clamp(36px, 3.5vw, 48px);
+    background: rgba(59, 130, 246, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.permission-icon-svg {
+    width: clamp(20px, 2vw, 28px);
+    height: clamp(20px, 2vw, 28px);
+    fill: var(--primary-color);
+}
+
+.permission-info {
+    flex: 1;
+}
+
+.permission-domain {
+    font-size: clamp(13px, 1.2vw, 15px);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.permission-text {
+    font-size: clamp(12px, 1.1vw, 14px);
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.permission-remember {
+    margin-bottom: clamp(12px, 1.8vh, 20px);
+    padding: clamp(8px, 1vh, 12px);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+}
+
+.permission-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.permission-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.permission-checkbox-label span {
+    font-size: clamp(12px, 1.1vw, 14px);
+    color: var(--text-primary);
+}
+
+.permission-actions {
+    display: flex;
+    gap: clamp(8px, 1vw, 12px);
+    justify-content: flex-end;
+}
+
+.permission-btn {
+    padding: clamp(7px, 1vh, 10px) clamp(14px, 1.5vw, 20px);
+    border: none;
+    border-radius: 8px;
+    font-size: clamp(12px, 1.1vw, 14px);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.permission-btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.permission-btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.permission-btn-secondary {
+    background: rgba(220, 38, 38, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.permission-btn-secondary:hover {
+    background: rgba(220, 38, 38, 0.25);
+    transform: translateY(-2px);
+}
+
+@media (max-height: 768px) {
+    .notification,
+    .permission-notification {
+        top: 52px;
+    }
+}

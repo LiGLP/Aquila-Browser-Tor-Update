@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action https: http:;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privater Tab mit Tor</title>
+    <style>
+        :root {
+            --bg: #1b0f2e;
+            --bg-card: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.12);
+            --text: #f3ecff;
+            --muted: rgba(243, 236, 255, 0.68);
+            --accent: #a970ff;
+            --ok: #4ade80;
+            --warn: #fbbf24;
+            --err: #f87171;
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; height: 100%; }
+        body {
+            background: radial-gradient(ellipse at top, #3b1d6e 0%, var(--bg) 60%);
+            color: var(--text);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 8vh 16px 32px;
+        }
+        main { width: 100%; max-width: 640px; }
+        .logo { width: 64px; height: 64px; margin: 0 auto 16px; display: block; }
+        h1 { text-align: center; font-size: 26px; font-weight: 600; margin: 0 0 6px; }
+        .sub { text-align: center; color: var(--muted); margin: 0 0 28px; font-size: 14px; }
+        form { display: flex; gap: 8px; margin-bottom: 20px; }
+        input[type=text] {
+            flex: 1; min-width: 0;
+            background: var(--bg-card); color: var(--text);
+            border: 1px solid var(--border); border-radius: 24px;
+            padding: 12px 18px; font-size: 15px; outline: none;
+        }
+        input[type=text]:focus { border-color: var(--accent); }
+        button {
+            background: var(--accent); color: #fff; border: 0; border-radius: 24px;
+            padding: 0 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+        }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 16px 18px; margin-bottom: 14px;
+        }
+        .status { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--warn); flex-shrink: 0; }
+        .status[data-status="connected"] .dot { background: var(--ok); }
+        .status[data-status="error"] .dot, .status[data-status="off"] .dot { background: var(--err); }
+        .bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+        .bar > div { height: 100%; width: 0; background: var(--accent); transition: width 0.3s ease; }
+        .detail { color: var(--muted); font-size: 13px; margin-top: 8px; word-break: break-word; }
+        .info h2 { font-size: 15px; margin: 0 0 8px; }
+        .info p { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 0 0 8px; }
+        .info p:last-child { margin-bottom: 0; }
+        kbd { background: var(--border); border-radius: 4px; padding: 1px 5px; font-size: 12px; }
+    </style>
+</head>
+<body>
+<main>
+    <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="34" r="26" fill="none" stroke="#a970ff" stroke-width="3"/>
+        <circle cx="32" cy="34" r="18" fill="none" stroke="#a970ff" stroke-width="3" opacity="0.75"/>
+        <circle cx="32" cy="34" r="10" fill="#a970ff" opacity="0.9"/>
+        <path d="M32 4c4 6 4 10 0 14" fill="none" stroke="#c8a6ff" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <h1>Privater Tab mit Tor</h1>
+    <p class="sub">Deine Verbindung läuft über das Tor-Netzwerk. Websites sehen nicht deine echte IP-Adresse.</p>
+
+    <form id="search" action="https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/" method="get">
+        <input type="text" name="q" id="q" placeholder="Mit DuckDuckGo (.onion) suchen" autocomplete="off" autofocus>
+        <button type="submit">Suchen</button>
+    </form>
+
+    <div class="card">
+        <div class="status" id="status" data-status="starting"><span class="dot"></span><span id="status-text">Verbinde mit Tor…</span></div>
+        <div class="bar"><div id="bar"></div></div>
+        <div class="detail" id="detail"></div>
+    </div>
+
+    <div class="card info">
+        <h2>Was ist ein Tab mit Tor?</h2>
+        <p>Tor leitet deinen Datenverkehr über drei zufällige Server weltweit. So wird deine IP-Adresse vor den Websites versteckt, die du besuchst, und dein Internetanbieter sieht nicht, welche Seiten du aufrufst. Außerdem kannst du <b>.onion</b>-Adressen öffnen.</p>
+        <p>Tor-Tabs speichern keinen Verlauf. Cookies und Website-Daten werden gelöscht, wenn du den letzten Tor-Tab schließt oder eine neue Identität anforderst. Erweiterungen sind in Tor-Tabs deaktiviert.</p>
+        <p>Über den Onion-Button in der Toolbar kannst du eine <b>neue Tor-Verbindung</b> (neue IP), das Exit-Land und Bridges wählen. Neuer Tor-Tab: <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd>.</p>
+        <p>Tor macht dich nicht automatisch anonym: Wenn du dich irgendwo einloggst oder persönliche Daten eingibst, kann man dich weiterhin erkennen. Für maximalen Schutz ist der offizielle Tor Browser die bessere Wahl.</p>
+    </div>
+</main>
+<script>
+    var TEXTS = {
+        off: 'Tor ist nicht gestartet',
+        downloading: 'Tor wird heruntergeladen…',
+        starting: 'Tor wird gestartet…',
+        connecting: 'Verbinde mit dem Tor-Netzwerk…',
+        connected: 'Mit Tor verbunden',
+        error: 'Verbindung zu Tor fehlgeschlagen'
+    };
+
+    window.aquilaTorStatus = function(st) {
+        if (!st) return;
+        var status = document.getElementById('status');
+        status.dataset.status = st.status;
+        document.getElementById('status-text').textContent = TEXTS[st.status] || st.status;
+        document.getElementById('bar').style.width = (st.status === 'connected' ? 100 : (st.progress || 0)) + '%';
+        var detail = '';
+        if (st.status === 'error') detail = st.error || '';
+        else if (st.status === 'connected') detail = st.exitIp ? 'Exit-IP: ' + st.exitIp + (st.exitCountry ? ' (' + st.exitCountry.toUpperCase() + ')' : '') : (st.exitCountry ? 'Exit-Land: ' + st.exitCountry.toUpperCase() : '');
+        else detail = st.message || '';
+        document.getElementById('detail').textContent = detail;
+    };
+
+    document.getElementById('search').addEventListener('submit', function(e) {
+        if (!document.getElementById('q').value.trim()) e.preventDefault();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+.action-btn.tor-btn svg {
+    fill: none;
+    stroke: var(--text-primary);
+}
+
+.action-btn.tor-btn::after {
+    content: '';
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.action-btn.tor-btn[data-status="connected"]::after { background: #4ade80; }
+.action-btn.tor-btn[data-status="connecting"]::after,
+.action-btn.tor-btn[data-status="starting"]::after,
+.action-btn.tor-btn[data-status="downloading"]::after { background: #fbbf24; }
+.action-btn.tor-btn[data-status="error"]::after { background: #f87171; }
+
+.tab.tor-tab {
+    background: rgba(124, 58, 237, 0.18);
+    border-color: rgba(169, 112, 255, 0.35);
+}
+
+.tab.tor-tab.active {
+    background: rgba(124, 58, 237, 0.38);
+    border-color: #a970ff;
+}
+
+body.tor-active .navigation-bar {
+    background: linear-gradient(90deg, #2a1452 0%, #1f0f3d 100%);
+    border-bottom-color: rgba(169, 112, 255, 0.4);
+}
+
+body.tor-active .address-bar {
+    border-color: rgba(169, 112, 255, 0.55);
+}
+
+body.tor-active .action-btn.tor-btn {
+    border-color: #a970ff;
+    background: rgba(169, 112, 255, 0.22);
+}
+
+.tor-panel {
+    position: fixed;
+    z-index: 10000;
+    width: 300px;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding: 14px;
+    border-radius: 14px;
+    background: #1f1338;
+    border: 1px solid rgba(169, 112, 255, 0.35);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    color: #f3ecff;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tor-panel-header {
+    padding-bottom: 6px;
+}
+
+.tor-panel-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.tor-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #fbbf24;
+    flex-shrink: 0;
+}
+
+.tor-panel-status[data-status="connected"] .tor-dot { background: #4ade80; }
+.tor-panel-status[data-status="error"] .tor-dot,
+.tor-panel-status[data-status="off"] .tor-dot { background: #f87171; }
+
+.tor-progress {
+    height: 3px;
+    margin-top: 10px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.tor-progress > div {
+    height: 100%;
+    background: #a970ff;
+    transition: width 0.3s ease;
+}
+
+.tor-panel-detail {
+    margin-top: 8px;
+    color: rgba(243, 236, 255, 0.7);
+    word-break: break-word;
+}
+
+.tor-panel-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+    color: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.tor-panel-btn:hover:not(:disabled) {
+    background: rgba(169, 112, 255, 0.22);
+    border-color: #a970ff;
+}
+
+.tor-panel-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.tor-panel-btn.primary {
+    background: #7c3aed;
+    border-color: #7c3aed;
+    font-weight: 600;
+}
+
+.tor-panel-btn span {
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+.tor-panel-btn.small {
+    justify-content: center;
+    padding: 6px 10px;
+}
+
+.tor-panel-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tor-panel-section label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.tor-panel-section select,
+.tor-panel-section textarea {
+    background: rgba(255, 255, 255, 0.08);
+    color: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 7px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+
+.tor-panel-section select {
+    max-width: 160px;
+}
+
+.tor-panel-section select option {
+    background: #1f1338;
+}
+
+.tor-panel-section textarea {
+    width: 100%;
+    resize: vertical;
+    font-family: ui-monospace, Consolas, monospace;
+}
+
+.tor-panel-hint {
+    margin: 0;
+    font-size: 11px;
+    color: rgba(243, 236, 255, 0.55);
+    line-height: 1.45;
+}

@@ -1,0 +1,170 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #0077FF;
+    --primary-hover: #0066DD;
+    --primary-active: #0055BB;
+    --bg-primary: #001122;
+    --bg-secondary: #002244;
+    --bg-tertiary: #003366;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow-light: rgba(0, 0, 0, 0.2);
+    --shadow-medium: rgba(0, 0, 0, 0.3);
+    --shadow-heavy: rgba(0, 0, 0, 0.5);
+    --primary-rgb: 0, 119, 255;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary), var(--bg-tertiary));
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+}
+
+.browser-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    contain: layout style;
+}
+
+.content-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    contain: strict;
+}
+
+.tab-contents {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.tab-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content webview {
+    width: 100%;
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover);
+}
+
+button {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.home-page.has-custom-bg {
+    background-color: transparent;
+}
+
+.home-page.has-custom-bg .home-header {
+    background: rgba(0, 0, 0, 0.52);
+    padding: 30px 48px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+}
+
+.home-page.has-custom-bg .home-title {
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+.home-page.has-custom-bg .home-subtitle {
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+}
+
+.home-page.has-custom-bg .home-search-bar {
+    background: rgba(0, 0, 0, 0.55);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+}
+
+.home-page.has-custom-bg .home-search-bar:focus-within {
+    background: rgba(0, 0, 0, 0.68);
+    border-color: var(--primary-color);
+}
+
+.home-page.has-custom-bg .home-search-bar input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.home-page.has-custom-bg .quick-access {
+    background: rgba(0, 0, 0, 0.48);
+    padding: 24px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+}
+
+.home-page.has-custom-bg .quick-access-title {
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+}
+
+.home-page.has-custom-bg .add-quick-access {
+    background: rgba(0, 0, 0, 0.4);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.home-page.has-custom-bg .add-quick-access:hover {
+    background: rgba(0, 0, 0, 0.58);
+}
+
+.home-page.has-custom-bg .quick-access-item {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.home-page.has-custom-bg .quick-access-item:hover {
+    background: rgba(0, 0, 0, 0.68);
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.home-page.has-custom-bg .quick-access-name {
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+}

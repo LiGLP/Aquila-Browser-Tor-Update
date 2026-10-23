@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Aquila Loading – Windows 7</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: radial-gradient(ellipse at 50% 60%, #1a1a2e 0%, #000000 100%);
+            height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .orb-stage {
+            width: 120px; height: 120px;
+            position: relative;
+            margin-bottom: 48px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .orb-ring {
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.12);
+            animation: ringPulse 2.6s ease-in-out infinite;
+        }
+
+        .orb-ring-2 {
+            inset: 18px;
+            border-color: rgba(255,255,255,0.08);
+            animation-delay: 0.4s;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.95); }
+            50%       { opacity: 1;   transform: scale(1.05); }
+        }
+
+        .crown-center {
+            position: relative; z-index: 2;
+            display: flex; align-items: center; justify-content: center;
+            animation: crownGlow 2.6s ease-in-out infinite;
+        }
+
+        @keyframes crownGlow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(180,210,255,0.5)); }
+            50%       { filter: drop-shadow(0 0 22px rgba(180,210,255,0.95)); }
+        }
+
+        .loading-title {
+            font-size: 36px; font-weight: 300;
+            color: #FFFFFF; letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(100,160,255,0.5);
+            margin-bottom: 6px;
+            animation: titleFade 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleFade {
+            0%   { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .loading-subtitle {
+            font-size: 12px; font-weight: 300;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 5px; text-transform: uppercase;
+            margin-bottom: 36px;
+        }
+
+        .win7-status {
+            font-size: 12px; font-weight: 300;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 3px; text-transform: uppercase;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.35; }
+            50%       { opacity: 0.75; }
+        }
+
+        .light-streak {
+            position: fixed;
+            width: 1px; height: 120px;
+            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.06), transparent);
+            animation: streakFall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes streakFall {
+            0%   { transform: translateY(-120px); opacity: 0; }
+            20%  { opacity: 1; }
+            80%  { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="streaks"></div>
+
+    <div class="loading-title">Aquila</div>
+    <p class="loading-subtitle" id="subtitle">Fast, Modern, Powerful</p>
+
+    <div class="orb-stage">
+        <div class="orb-ring"></div>
+        <div class="orb-ring orb-ring-2"></div>
+        <div class="crown-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
+                <path fill="rgba(200,225,255,0.92)" d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="win7-status" id="loadingText">Starting...</div>
+
+    <audio id="loading-sound"></audio>
+
+    <script>
+        const sc = document.getElementById('streaks');
+        const sf = document.createDocumentFragment();
+        for (let i = 0; i < 12; i++) {
+            const s = document.createElement('div');
+            s.className = 'light-streak';
+            s.style.left = Math.random() * 100 + '%';
+            s.style.animationDuration = (Math.random() * 6 + 5) + 's';
+            s.style.animationDelay = (Math.random() * 8) + 's';
+            sf.appendChild(s);
+        }
+        sc.appendChild(sf);
+
+        const msgs = ['Starting...', 'Loading...', 'Please wait...', 'Initializing...'];
+        let mi = 0;
+        setInterval(() => {
+            mi = (mi + 1) % msgs.length;
+            document.getElementById('loadingText').textContent = msgs[mi];
+        }, 2000);
+
+        const { ipcRenderer } = require('electron');
+
+        async function init() {
+            const audio = document.getElementById('loading-sound');
+            try {
+                const data = await ipcRenderer.invoke('get-data');
+                const settings = data?.settings || {};
+                if (settings.loadingSubtitle) {
+                    document.getElementById('subtitle').textContent = settings.loadingSubtitle;
+                }
+                const sound = settings.loadingSound || 'aquila.mp3';
+                audio.src = `sounds/${sound}`;
+                audio.play().catch(console.error);
+            } catch (e) {
+                audio.src = 'sounds/aquila.mp3';
+                audio.play().catch(console.error);
+            }
+        }
+
+        init();
+
+        ipcRenderer.on('subtitle', (event, text) => {
+            if (text) document.getElementById('subtitle').textContent = text;
+        });
+
+        ipcRenderer.on('sound', (event, sound) => {
+            const audio = document.getElementById('loading-sound');
+            audio.src = `sounds/${sound}`;
+            audio.play().catch(console.error);
+        });
+    </script>
+</body>
+</html>

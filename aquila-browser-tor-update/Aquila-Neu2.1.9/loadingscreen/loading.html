@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquila Loading</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #001122, #002244, #003366);
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-container {
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+.loading-logo-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 40px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logoFloat 2.5s ease-in-out infinite;
+            will-change: opacity;
+        }
+
+@keyframes logoFloat {
+            0%, 100% { opacity: 0.85; }
+            50% { opacity: 1; }
+        }
+
+        .logo-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(0, 119, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .logo-circle:nth-child(1) {
+            border-color: rgba(0, 119, 255, 0.6);
+        }
+
+        .logo-circle:nth-child(2) {
+            border-color: rgba(0, 119, 255, 0.4);
+            transform: scale(0.8);
+        }
+
+        .logo-circle:nth-child(3) {
+            border-color: rgba(0, 119, 255, 0.2);
+            transform: scale(0.6);
+        }
+
+        .logo-inner {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .crown {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 30px rgba(0, 119, 255, 0.8));
+        }
+
+.crown svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px rgba(0, 119, 255, 0.8));
+            animation: crownPulse 2s ease-in-out infinite alternate;
+            will-change: transform, opacity;
+        }
+
+        @keyframes crownPulse {
+            0% { 
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            100% { 
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        .loading-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 119, 255, 0.6);
+        }
+
+        .loading-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 50px;
+        }
+
+.loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #0077FF;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            animation: spin 1s linear infinite;
+            will-change: transform;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+.particle {
+            position: absolute;
+            background: rgba(0, 119, 255, 0.3);
+            border-radius: 50%;
+            animation: particleFloat 15s infinite linear;
+            will-change: transform, opacity;
+        }
+
+@keyframes particleFloat {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="loading-container">
+        <div class="loading-logo-container">
+            <div class="logo-circle"></div>
+            <div class="logo-circle"></div>
+            <div class="logo-circle"></div>
+            <div class="logo-inner">
+                <div class="crown">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                        <path d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <h1 class="loading-title">Aquila</h1>
+        <p class="loading-subtitle" id="subtitle">Fast, Modern, Powerful</p>
+        
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading...</p>
+    </div>
+
+    <audio id="loading-sound"></audio>
+
+    <script>
+        const particlesContainer = document.getElementById('particles');
+        
+const fragment = document.createDocumentFragment();
+        for (let i = 0; i < 8; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 10 + 5 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            fragment.appendChild(particle);
+        }
+        particlesContainer.appendChild(fragment);
+
+        const { ipcRenderer } = require('electron');
+        const THEMES = require('./loading-themes.js');
+
+        function applyTheme(themeName) {
+            const t = THEMES[themeName] || THEMES['aquila'];
+
+            document.body.style.background = t.bg;
+            document.body.style.color = t.text;
+            document.body.style.fontFamily = t.font;
+
+            const spinner = document.querySelector('.loading-spinner');
+            spinner.style.borderColor = t.spinnerBorder;
+            spinner.style.borderTopColor = t.spinnerTop;
+
+            document.querySelectorAll('.logo-circle').forEach((el, i) => {
+                el.style.borderColor = t.circles[i];
+            });
+
+            document.querySelector('.loading-title').style.textShadow = t.titleShadow;
+            document.querySelector('.crown').style.filter = t.crownFilter;
+            document.querySelector('.loading-subtitle').style.color = t.textSecondary;
+            document.querySelector('.loading-text').style.color = t.textSecondary;
+
+            document.querySelectorAll('.particle').forEach(p => {
+                p.style.background = t.particles;
+            });
+        }
+
+        async function init() {
+            const audio = document.getElementById('loading-sound');
+            try {
+                const data = await ipcRenderer.invoke('get-data');
+                const settings = data?.settings || {};
+
+                applyTheme(settings.theme || 'aquila');
+
+                const sound = settings.loadingSound || 'aquila.mp3';
+                audio.src = `sounds/${sound}`;
+                audio.play().catch(console.error);
+
+                if (settings.loadingSubtitle) {
+                    document.getElementById('subtitle').textContent = settings.loadingSubtitle;
+                }
+            } catch (e) {
+                applyTheme('aquila');
+                audio.src = 'sounds/aquila.mp3';
+                audio.play().catch(console.error);
+            }
+        }
+
+        init();
+
+        ipcRenderer.on('subtitle', (event, text) => {
+            if (text) {
+                document.getElementById('subtitle').textContent = text;
+            }
+        });
+
+        ipcRenderer.on('sound', (event, sound) => {
+            const audio = document.getElementById('loading-sound');
+            audio.src = `sounds/${sound}`;
+            audio.play().catch(console.error);
+        });
+    </script>
+</body>
+</html>

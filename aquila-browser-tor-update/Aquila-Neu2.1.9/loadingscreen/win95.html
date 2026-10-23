@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Aquila Loading – Windows 95</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #008080;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .win95-window {
+            width: 420px;
+            background: #C0C0C0;
+            box-shadow:
+                inset -1px -1px 0 #404040,
+                inset  1px  1px 0 #FFFFFF,
+                inset -2px -2px 0 #808080,
+                inset  2px  2px 0 #DFDFDF,
+                4px 4px 0 #000000;
+        }
+
+        .win95-titlebar {
+            background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+            padding: 3px 4px;
+            display: flex; align-items: center; justify-content: space-between;
+            user-select: none;
+        }
+
+        .titlebar-left { display: flex; align-items: center; gap: 4px; }
+
+        .titlebar-text { color: #FFFFFF; font-size: 12px; font-weight: bold; letter-spacing: 0.3px; }
+
+        .titlebar-buttons { display: flex; gap: 2px; }
+
+        .win95-btn {
+            width: 16px; height: 14px;
+            background: #C0C0C0;
+            box-shadow:
+                inset -1px -1px 0 #404040,
+                inset  1px  1px 0 #FFFFFF,
+                inset -2px -2px 0 #808080,
+                inset  2px  2px 0 #DFDFDF;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9px; font-weight: bold; color: #000;
+            cursor: default; line-height: 1;
+        }
+
+        .win95-content {
+            padding: 20px 24px 20px;
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0;
+        }
+
+        .win95-crown-row { display: flex; align-items: center; gap: 12px; margin-bottom: 0; }
+
+        .win95-crown-box {
+            width: 56px; height: 56px;
+            background: #000080;
+            box-shadow:
+                inset -1px -1px 0 #FFFFFF,
+                inset  1px  1px 0 #404040,
+                inset -2px -2px 0 #DFDFDF,
+                inset  2px  2px 0 #808080;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .win95-divider {
+            width: 100%; height: 0;
+            border-top: 1px solid #808080;
+            border-bottom: 1px solid #FFFFFF;
+            margin: 12px 0;
+        }
+
+        .win95-label { font-size: 12px; color: #000; margin-bottom: 10px; align-self: flex-start; }
+
+        .win95-progress-track {
+            width: 100%; height: 20px;
+            background: #FFFFFF;
+            box-shadow:
+                inset 1px 1px 0 #808080,
+                inset -1px -1px 0 #FFFFFF,
+                inset 2px 2px 0 #404040,
+                inset -2px -2px 0 #DFDFDF;
+            display: flex; align-items: center;
+            padding: 2px; gap: 2px;
+            overflow: hidden; margin-bottom: 14px;
+        }
+
+        .win95-block {
+            width: 13px; height: 100%;
+            background: #000080;
+            flex-shrink: 0;
+            opacity: 0;
+            animation: blockAppear 3s steps(1, end) forwards;
+        }
+
+        @keyframes blockAppear {
+            0%   { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .win95-status { font-size: 11px; color: #000; align-self: flex-start; }
+    </style>
+</head>
+<body>
+
+    <div class="win95-window">
+        <div class="win95-titlebar">
+            <div class="titlebar-left">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="#FFD700">
+                    <path d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z"/>
+                </svg>
+                <span class="titlebar-text">Aquila</span>
+            </div>
+            <div class="titlebar-buttons">
+                <div class="win95-btn">_</div>
+                <div class="win95-btn">□</div>
+                <div class="win95-btn">✕</div>
+            </div>
+        </div>
+
+        <div class="win95-content">
+            <div class="win95-crown-row">
+                <div class="win95-crown-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+                        <path fill="#FFD700" d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div style="font-size:28px;font-weight:900;color:#000080;letter-spacing:1px;">Aquila</div>
+                    <div style="font-size:11px;color:#444;" id="subtitle">Fast, Modern, Powerful</div>
+                </div>
+            </div>
+
+            <div class="win95-divider"></div>
+
+            <div class="win95-label">Please wait while Aquila loads...</div>
+            <div class="win95-progress-track" id="progressTrack"></div>
+            <div class="win95-status" id="loadingText">Loading...</div>
+        </div>
+    </div>
+
+    <audio id="loading-sound"></audio>
+
+    <script>
+        const track = document.getElementById('progressTrack');
+        const blockCount = 24;
+        const frag = document.createDocumentFragment();
+
+        for (let i = 0; i < blockCount; i++) {
+            const b = document.createElement('div');
+            b.className = 'win95-block';
+            b.style.animationDelay = (i * (3 / blockCount)) + 's';
+            frag.appendChild(b);
+        }
+        track.appendChild(frag);
+
+        const msgs = ['Loading...', 'Initializing...', 'Please wait...', 'Almost ready...'];
+        let mi = 0;
+        setInterval(() => {
+            mi = (mi + 1) % msgs.length;
+            document.getElementById('loadingText').textContent = msgs[mi];
+        }, 1800);
+
+        const { ipcRenderer } = require('electron');
+
+        async function init() {
+            const audio = document.getElementById('loading-sound');
+            try {
+                const data = await ipcRenderer.invoke('get-data');
+                const settings = data?.settings || {};
+                if (settings.loadingSubtitle) {
+                    document.getElementById('subtitle').textContent = settings.loadingSubtitle;
+                }
+                const sound = settings.loadingSound || 'aquila.mp3';
+                audio.src = `sounds/${sound}`;
+                audio.play().catch(console.error);
+            } catch (e) {
+                audio.src = 'sounds/aquila.mp3';
+                audio.play().catch(console.error);
+            }
+        }
+
+        init();
+
+        ipcRenderer.on('subtitle', (event, text) => {
+            if (text) document.getElementById('subtitle').textContent = text;
+        });
+
+        ipcRenderer.on('sound', (event, sound) => {
+            const audio = document.getElementById('loading-sound');
+            audio.src = `sounds/${sound}`;
+            audio.play().catch(console.error);
+        });
+    </script>
+</body>
+</html>
